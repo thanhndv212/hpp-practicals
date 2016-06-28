@@ -1,0 +1,117 @@
+Manipulation planning
+=====================
+
+Objective
+---------
+
+Define a constraint graph and plan a manipulation path.
+
+Introduction
+------------
+Open a terminal, cd into be-isae directory and open 3 tab by typing CTRL+SHIFT+T
+twice. In the first terminal, type
+[source,sh]
+----
+hpp-manipulation-server
+----
+
+In the second terminal, type
+[source,sh]
+----
+hpp-gui
+----
+
+In the third terminal, type
+[source,sh]
+----
+cd script
+python -i manipulation.py
+----
+
+image::manipulation.png[width="40%",alt="hpp-gui graphical interface"]
+
+You should see the above manipulator on a horizontal plane and a ball.
+You can display the initial and goal configurations of the problem defined in
+the script by typing respectively
+
+[source,python]
+----
+r (q_init)
+r (q_goal)
+----
+
+Displaying the constraint graph
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+in the python terminal. You can display the constraint graph by typing
+
+[source,python]
+----
+graph.display (format='svg')
+----
+
+The graph should be displayed in a brower. By moving the mouse on
+nodes and edges, you can see the constraints associated to each graph
+element.
+
+Solving the problem
+~~~~~~~~~~~~~~~~~~~
+
+Typing
+[source,python]
+----
+ps.solve ()
+----
+should solve the problem in a minute or so.
+
+Displaying the path
+~~~~~~~~~~~~~~~~~~~
+As in exercise 1, the path can be displayed using the path player
+[source,python]
+----
+pp (0)
+----
+
+A more difficult problem
+------------------------
+
+script +manipulation_box.py+ defines the same problem as
++manipulation.py+, except that in the initial configuration, the ball
+is in a box. The resolution takes a lot more time since RRT algorithm
+needs to generate a lot of nodes before the gripper reaches the
+initial configuration of the box.
+
+Instructions
+------------
+
+In order to help the manipulation planner, define a constraint graph with
+intermediate states like for instance:
+
+- a state where the gripper is empty above the ball
+- a state where the gripper holds the ball above the ground.
+
+The graph below provides an example.
+
+image::constraintgraph.png[width="40%",alt="Constraint graph"]
+
+Hints
+-----
+
+Displaying the constraint graph
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Type in a terminal
+
+[source,sh]
+----
+hpp-plot-manipulation-graph
+----
+The following window should pop up.
+
+image::hpp-plot-manipulation-graph.png[width="40%",alt="hpp-plot-manipulation-graph"]
+
+Click on buttons "Refresh" and "Statistics" to display the current constraint graph.
+
+By clicking on edges, you can see some statistics about the roadmap extension.
+
+image::hpp-plot-manipulation-graph-statistics.png[width="40%",alt="hpp-plot-manipulation-graph"]

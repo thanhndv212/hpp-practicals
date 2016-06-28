@@ -1,0 +1,34 @@
+\frametitle{Algorithm}\framesubtitle {Manipulation RRT}
+%-------------------------------------------------------
+  \begin{columns}
+    \column{0.3\textwidth}
+    \includegraphics<1>[width=\textwidth,height=\textheight,keepaspectratio]{img/mrrt/foliation-project-seq-1.png}
+    \includegraphics<2-3>[width=\textwidth,height=\textheight,keepaspectratio]{img/mrrt/foliation-project-seq-2.png}
+    \includegraphics<4>[width=\textwidth,height=\textheight,keepaspectratio]{img/mrrt/foliation-project-seq-3.png}
+    \includegraphics<5>[width=\textwidth,height=\textheight,keepaspectratio]{img/mrrt/foliation-project-seq-4.png}
+    \includegraphics<6>[width=\textwidth,height=\textheight,keepaspectratio]{img/mrrt/foliation-project-seq-5.png}
+    \includegraphics<7->[width=\textwidth,height=\textheight,keepaspectratio]{img/mrrt/foliation-project-seq-5.png}
+    \column{0.7\textwidth}
+    \begin{block}{Manipulation RRT}
+      \setbeamertemplate{itemize item}{}% Remove bullets frp, ote,oze sinote,
+      \setlength\leftmargini{0em}
+      \begin{itemize}[leftmargin=*]
+        \item<1-> $\conf_{rand}$ = shoot\_random\_config()
+        \item <2-> for each connected component:
+          \setlength\leftmargin{0em}
+          \begin{itemize}[leftmargin=*]
+          \item[]<2-> $\conf_{near}$ = nearest\_neighbour($\conf_{rand}$, $roadmap$)
+          \item[]<3-> $e$ = select\_transition($\conf_{near}$)
+          \item[]<4-> $\conf_{proj}$ = generate\_target\_config($\conf_{near},\conf_{rand}$, $e$)
+          \item[]<5-> $\conf_{new}$ = extend($\conf_{near}$, $\conf_{proj}$, edge)
+          \item[]<6-> $roadmap$.insert\_node($\conf_{new}$)
+          \item[]<7-> $roadmap$.insert\_edge(e, $\conf_{near}$, $\conf_{new}$)
+          \item[]<7-> new\_nodes.append ($\conf_{new}$)
+          \end{itemize}
+        \item <8-> for $(\conf_0,\conf_1)\in \mbox{pairs} (\conf_{new}^1, ..., \conf_{new}^{n_{cc}})$:
+          \begin{itemize}
+            \item[]<9-> connect (roadmap, $\conf_0,\conf_1$)
+          \end{itemize}
+      \end{itemize}
+    \end{block}
+  \end{columns}

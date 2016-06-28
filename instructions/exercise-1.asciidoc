@@ -1,0 +1,98 @@
+Programming RRT algorithm
+=========================
+
+Objective
+---------
+Program RRT algorithm in python.
+
+Instructions
+------------
+Open a terminal cd into be-isae directory and open 3 tab by typing CTRL+SHIFT+T twice.
+In the first terminal, type
+[source,sh]
+----
+hppcorbaserver
+----
+
+In the second terminal, type
+[source,sh]
+----
+hpp-gui
+----
+
+In the third terminal, type
+[source,sh]
+----
+cd script
+python -i rrt.py
+----
+
+image::hpp-gui-ur5.png[width="40%",alt="hpp-gui graphical interface"]
+
+You should see the above window displaying a manipulator robot surrounded by obstacles.
+
+In the third terminal, you should see the message "Method solveBiRRT is not implemented yet". Open file +script/motion_planner.py+ in a text editor. The message is produced by method +solveBiRRT+ of class +MotionPlanner+.
+
+Exercise
+--------
+
+In file +script/motion_planner.py+, remove instruction
+[source,python]
+----
+    print ("Method solveBiRRT is not implemented yet")
+----
+and implement RRT algorithm between markers
+[source,python]
+----
+      #### RRT begin
+
+      #### RRT end
+----
+
+Displaying a path
+-----------------
+While running, your RRT algorithm will produce paths to store in the roadmap
+edges. Those paths are stored in a vector and can be displayed by the path
+player +pp+. To display the result of your algorithm, type
+
+[source,python]
+----
+pid = ps.numberPaths () - 1
+if pid < 0: raise RuntimeError ("No path in vector")
+
+pp (pid)
+----
+
+Hint
+----
+
+You can use methods of objects +robot+ and +ps+. To get the list of these
+methods with documentation, type in the python terminal
+
+[source,python]
+----
+    help (robot)
+    help (ps)
+----
+
+In +class MotionPlanner+, you can access these object by
+
+[source,python]
+----
+    self.robot
+    self.ps
+----
+
+Some useful methods
+~~~~~~~~~~~~~~~~~~~
+[source,python]
+----
+robot.shootRandomConfig
+ps.getNearestConfig
+ps.directPath
+ps.addConfigToRoadmap
+ps.addEdgeToRoadmap
+ps.pathLength
+ps.configAtParam
+ps.numberConnectedComponents
+----

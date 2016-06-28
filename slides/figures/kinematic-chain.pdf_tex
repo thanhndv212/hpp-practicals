@@ -1,0 +1,73 @@
+%% Creator: Inkscape inkscape 0.48.4, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'kinematic-chain.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{579.25584106bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.5705836)%
+    \put(0,0){\includegraphics[width=\unitlength]{kinematic-chain.pdf}}%
+    \put(0.33049552,0.47798863){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{T3}}}%
+    \put(0.34036039,0.34530607){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R3}}}%
+    \put(0.06775513,0.16237077){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
+    \put(0.29680964,0.18163587){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
+    \put(0.42426384,0.18015612){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
+    \put(0.06094052,0.02447496){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
+    \put(0.29848668,0.03612898){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
+    \put(0.42771654,0.03662223){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
+    \put(0.69475481,0.52169005){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$q_0$}}}%
+    \put(0.7196607,0.29867794){\color[rgb]{0,0,0}\rotatebox{92.30970331}{\makebox(0,0)[lb]{\smash{...}}}}%
+    \put(0.72488793,-0.00562644){\color[rgb]{0,0,0}\rotatebox{92.30970331}{\makebox(0,0)[lb]{\smash{...}}}}%
+    \put(0.69377298,0.4547574){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$q_1$}}}%
+    \put(0.69377307,0.39616301){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$q_2$}}}%
+    \put(0.70542477,0.22315398){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$q_i$}}}%
+    \put(0.7044429,0.15622131){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$q_{i+1}$}}}%
+    \put(0.70444299,0.09762697){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$q_{i+2}$}}}%
+    \put(0.04962111,0.35762073){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\body_0$}}}%
+    \put(-0.00249297,0.24967715){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\body_1$}}}%
+    \put(-0.00458562,0.11435203){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\body_2$}}}%
+  \end{picture}%
+\endgroup%
