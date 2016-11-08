@@ -1,8 +1,23 @@
 %
-% Manipulation
+%  A few examples
 %
 
-\section {Planification de mouvement de manipulation}
+\begin {frame} {A few examples}
+  \begin {center}
+    \includegraphics [height=2cm] {figures/baxter-manipulation.png}
+    \hspace*{.7cm}
+    \includegraphics [height=2cm] {figures/nextage-demo.png}
+  \end {center}
+  \begin {center}
+    \includegraphics [height=2cm] {figures/fiad-full-run.png}
+    \hspace*{.2cm}
+    \includegraphics [height=2cm] {figures/romeo-placard.png}
+  \end {center}
+\end {frame}
+
+%
+% Manipulation
+%
 
 \begin {frame} {Definitions}
 
@@ -242,7 +257,7 @@ Motion constraints
       \item numerical constraints
     \end {itemize}
     \pause
-  \item system trajectories are subject to
+  \item trajectories of the system are subject to
     \begin {itemize}
     \item numerical constraints
     \item parameterizable numerical constraints.
@@ -263,7 +278,7 @@ Motion constraints
     \begin {itemize}
       \item numerical constraints
     \end {itemize}
-  \item system trajectories are subject to
+  \item trajectories of the system are subject to
     \begin {itemize}
     \item \sout{numerical constraints}
     \item parameterizable numerical constraints, the dimension of the parameter being possibly less than the dimension of the constraint.
@@ -300,6 +315,7 @@ Motion constraints
 %
 
 \begin {frame} {Projecting configuration on constraint}
+  Newton-Raphson algorithm
   \begin {itemize}
   \item $\conf_0$ configuration,
   \item $f(\conf) = 0$ non-linear constraint,
@@ -319,24 +335,161 @@ Motion constraints
 \end {frame}
 
 %
-%  Projecting path on constraint
+%  Steering method
 %
+
+\begin {frame} {Steering method}
+  Mapping $\steer$ from $\CS\times\CS$ to $C^1([0,1],\CS)$ such that
+  \begin {align*}
+    \steer (\conf_0,\conf_1) (0) &= \conf_0 \\
+    \steer (\conf_0,\conf_1) (1) &= \conf_1 \\
+  \end {align*}
+\end {frame}
+
+%
+%  Constrained steering method
+%
+
+\begin {frame} {Constrained steering method}
+  Let
+  \begin {itemize}
+  \item $\steer$ be a steering method
+  \item $f\in C^1(\CS,\real^m)$ be a numerical constraint.
+  \end {itemize}
+  A constrained steering method $\bar{\steer}$ of constraint $f$ is a steering method such that
+  \begin {align*}
+    \forall t\in [0,1], f(\bar{\steer} (t)) &= 0
+  \end {align*}
+\end {frame}
 
 \begin {frame} {Projecting path on constraint}
   \begin {itemize}
   \item $path$: mapping from $[0,1]$ to $\CS$
   \item $f(\conf) = 0$ non-linear constraint,
-  \item $\epsilon$ numerical tolerance
   \end {itemize}
-  Projection ($path$, $f$):
-  \begin{itemize}
-    \item [] if $\|f(path (0))\| > \epsilon$ or $\|f(path (1))\| > \epsilon$:
-      \begin {itemize}
-      \item [] return failure
-      \end {itemize}
+  Applying Newton Raphson at each point may result in a discontinuous path
+  \begin {center}
+  \includegraphics [width=.5\linewidth]{figures/second_order_polynomial2.eps}
+  \end {center}
+\end {frame}
 
-  \end{itemize}
+%
+%  Discontinuous Projection
+%
 
+\begin {frame} {Discontinuous Projection}
+  \begin {center}
+  \includegraphics [width=.5\linewidth]{figures/second_order_polynomial2.eps}
+  \end {center}
+  \begin{align*}
+  \CS=\real^2,\, & f(x,y) = y^2-1\\
+  &\frac{\partial f}{\partial \conf} = \left(\begin{array}{ll}
+  0 & 2y\end{array}\right),\ 
+  \frac{\partial f}{\partial \conf}^{+} = \left(\begin{array}{l}
+  0 \\ \frac{1}{2y}\end{array}\right)\ \mbox{ou} \left(\begin{array}{l}
+  0 \\ 0\end{array}\right)\\
+  & y_{i+1} = y_i + \frac {1-y_i^2}{2y_i}
+  \end{align*}
+\end {frame}
+
+%
+%  Testing projection continuity
+%
+
+\begin {frame} {Testing projection continuity}
+  \begin{columns}
+    \centering
+    \column{0.7\textwidth}
+    \begin {itemize}
+      \item The initial path is sampled and successive samples are projected,
+      \item {\color {white} if 2 successive projections are too far away, an intermediate sample is selected.}
+      \item {\color {white} Choosing appropriate sampling ensures us continuity of the projection.}
+    \end {itemize}
+    \column{0.3\textwidth}
+    \begin {center}
+      \includegraphics [width=.9\linewidth] {figures/progressive_0.eps}
+    \end {center}
+  \end {columns}
+\end {frame}
+
+%
+%  Testing projection continuity
+%
+
+\begin {frame} {Testing projection continuity}
+  \begin{columns}
+    \centering
+    \column{0.7\textwidth}
+    \begin {itemize}
+      \item The initial path is sampled and successive samples are projected,
+      \item {\color {white} if 2 successive projections are too far away, an intermediate sample is selected.}
+      \item {\color {white} Choosing appropriate sampling ensures us continuity of the projection.}
+    \end {itemize}
+    \column{0.3\textwidth}
+    \begin {center}
+      \includegraphics [width=.9\linewidth] {figures/progressive_1.eps}
+    \end {center}
+  \end {columns}
+\end {frame}
+
+%
+%  Testing projection continuity
+%
+
+\begin {frame} {Testing projection continuity}
+  \begin{columns}
+    \centering
+    \column{0.7\textwidth}
+    \begin {itemize}
+      \item The initial path is sampled and successive samples are projected,
+      \item {\color {white} if 2 successive projections are too far away, an intermediate sample is selected.}
+      \item {\color {white} Choosing appropriate sampling ensures us continuity of the projection.}
+    \end {itemize}
+    \column{0.3\textwidth}
+    \begin {center}
+      \includegraphics [width=.9\linewidth] {figures/progressive_2.eps}
+    \end {center}
+  \end {columns}
+\end {frame}
+
+%
+%  Testing projection continuity
+%
+
+\begin {frame} {Testing projection continuity}
+  \begin{columns}
+    \centering
+    \column{0.7\textwidth}
+    \begin {itemize}
+      \item The initial path is sampled and successive samples are projected,
+      \item {if 2 successive projections are too far away, an intermediate sample is selected.}
+      \item {\color {white} Choosing appropriate sampling ensures us continuity of the projection.}
+    \end {itemize}
+    \column{0.3\textwidth}
+    \begin {center}
+      \includegraphics [width=.9\linewidth] {figures/progressive_3.eps}
+    \end {center}
+  \end {columns}
+\end {frame}
+
+%
+%  Testing projection continuity
+%
+
+\begin {frame} {Testing projection continuity}
+  \begin{columns}
+    \centering
+    \column{0.7\textwidth}
+    \begin {itemize}
+      \item The initial path is sampled and successive samples are projected,
+      \item {if 2 successive projections are too far away, an intermediate sample is selected.}
+      \item {Choosing appropriate sampling ensures us continuity of the projection.}
+    \end {itemize}
+    \column{0.3\textwidth}
+    \begin {center}
+      \includegraphics [width=.9\linewidth] {figures/progressive_4.eps}
+    \end {center}
+  \end {columns}
 \end {frame}
 
 %
@@ -370,9 +523,9 @@ Motion constraints
           \item[]<7-> $roadmap$.insert\_edge(e, $\conf_{near}$, $\conf_{new}$)
           \item[]<7-> new\_nodes.append ($\conf_{new}$)
           \end{itemize}
-        \item <8-> for $(\conf_0,\conf_1)\in \mbox{pairs} (\conf_{new}^1, ..., \conf_{new}^{n_{cc}})$:
+        \item <8-> for $\conf\in (\conf_{new}^1, ..., \conf_{new}^{n_{cc}})$:
           \begin{itemize}
-            \item[]<9-> connect (roadmap, $\conf_0,\conf_1$)
+            \item[]<9-> connect ($\conf$, roadmap)
           \end{itemize}
       \end{itemize}
     \end{block}
@@ -446,7 +599,26 @@ $$
 
 \begin {frame} {Connect}
 
-connect (roadmap, $\conf_0,\conf_1$):
+  \begin{block}{connect ($\conf$, roadmap)}
+    \setbeamertemplate{itemize item}{}% Remove bullets frp, ote,oze sinote,
+    \begin{itemize}
+    \item <1-> for each connected component $cc$ not containing $\conf$:
+        \begin{itemize}
+        \item []<1->for all $n$ closest config $\conf_1$ to $\conf$ in $cc$:
+          \begin{itemize}
+          \item connect ($\conf$, $\conf_1$)
+          \end{itemize}
+        \end{itemize}
+    \end{itemize}
+  \end{block}
+\end {frame}
+
+%
+%  Connect
+%
+
+\begin {frame} {Connect}
+connect ($\conf_0$, $\conf_1$):
 \begin{itemize}
   \item [] $s_0$ = state ($\conf_0$)
   \item [] $s_1$ = state ($\conf_1$)
@@ -524,17 +696,78 @@ Manipulation RRT is initialized with $\conf_{init}$, $\conf_{goal}$.
   \begin{center}
     \tiny
       \begin{tikzpicture}[>=stealth',auto,node distance=1.75cm,
-        thick,main node/.style={circle,draw,text width=.75cm,align=center,font=\tiny}]
-        {\node[main node] (nh) {Placement};}
-        {\node[main node] (h) [right of=nh] {Grasp};}
-        {\path[->] (nh) edge[loop left] node[left, align=right] {Transit} (nh);}
+        thick,main node/.style={circle,draw,text width=.75cm,align=center,
+          font=\tiny}]
+        {\color{red}\node[main node] (nh) {Placement};}
+        {\color{blue}\node[main node] (h) [right of=nh] {Grasp};}
+        {\color{red}\path[->] (nh) edge[loop left] node[left, align=right] {Transit} (nh);}
         {\color{red}\path[<-] (h) edge[bend right=22.5] node[above] {Grasp ball} (nh);}
-        {\path[->] (h) edge[bend left=22.5] node[below] {Release ball} (nh);}
-        {\path[->] (h) edge[loop right] node[right] {Transfer} (h);}
+        {\color{blue}\path[->] (h) edge[bend left=22.5] node[below] {Release ball} (nh);}
+        {\color{blue}\path[->] (h) edge[loop right] node[right] {Transfer} (h);}
       \end{tikzpicture}
     \end{center}
 \end {columns}
 \end{frame}
+
+%
+%  Generate target configuration
+%
+
+\begin {frame} {Crossed foliation transition: generate target configuration}
+
+  \begin {columns}
+    \column {.6\linewidth}
+    $\conf_{proj}$ = generate\_target\_config($\conf_{near},\conf_{rand}$, $e$)
+    \vskip .5cm
+    $\conf_1\leftarrow$ pick configuration
+    \begin {itemize}
+    \item in node $N_1$,
+    \item not in same connected component as $\conf_{near}$
+    \end {itemize}
+    \begin{align*}
+      f_{e_1} (\conf_{proj}) &= f_{e_1} (\conf_{near})\\
+      {\color{red} f_{e_2} (\conf_{proj})} &{\color{red}= f_{e_2} (\conf_1)}\\
+      f_{N_2} (\conf_{proj}) &= 0
+    \end{align*}
+    \column {.4\linewidth}
+    \begin{center}
+      \tiny
+      \begin{tikzpicture}[>=stealth',auto,node distance=3.25cm,
+          thick,main node/.style={circle,draw,text width=1.25cm,align=center,
+            font=\tiny}]
+        {\node[main node] (nh) {$N_1$};}
+        {\node[main node] (h) [right of=nh] {$N_2$};}
+        {\path[<-] (h) edge[bend right=0] node[above] {Crossed foliation}
+          (nh);}
+        {\path[<-] (h) edge[bend right=22.5] node[above] {$e_1$} (nh);}
+        {\path[->] (h) edge[bend left=22.5] node[below] {$e_2$} (nh);}
+      \end{tikzpicture}
+    \end{center}
+  \end {columns}
+\end {frame}
+
+%
+%  Extend
+%
+
+\begin {frame} {Crossed foliation transition: extend}
+
+  $\conf_{new}$ = extend($\conf_{near}$, $\conf_{proj}$, $e_1$)
+  \vskip.5cm
+  \textit {Project} straight path $[\conf_{near},\conf_{proj}]$ on $e_1$ constraint:
+  \begin {itemize}
+  \item if projection successful and projected path collision free
+    $$
+    \conf_{2} \leftarrow \conf_{proj}
+    $$
+    \pause
+    \begin{align*}
+      f_{e_2} (\conf_{2}) &= f_{e_2} (\conf_1)\\
+      f_{N_2} (\conf_{2}) &= 0
+    \end{align*}
+    \item $\conf_2$ is connectable to $\conf_1$ via $e_2$.
+    \end{itemize}
+\end {frame}
 
 %
 %  Relative positions as numerical constraints
@@ -556,3 +789,4 @@ $$
 $R_1^T R_2$ is the matrix of the rotation around axis $\mathbf{v}/\|\mathbf {v}\|$ and of angles $\|\mathbf {v}\|$.
 \end {columns}
 \end {frame}
+

@@ -25,9 +25,9 @@
           \item[]<7-> $roadmap$.insert\_edge(e, $\conf_{near}$, $\conf_{new}$)
           \item[]<7-> new\_nodes.append ($\conf_{new}$)
           \end{itemize}
-        \item <8-> for $(\conf_0,\conf_1)\in \mbox{pairs} (\conf_{new}^1, ..., \conf_{new}^{n_{cc}})$:
+        \item <8-> for $\conf\in (\conf_{new}^1, ..., \conf_{new}^{n_{cc}})$:
           \begin{itemize}
-            \item[]<9-> connect (roadmap, $\conf_0,\conf_1$)
+            \item[]<9-> connect ($\conf$, roadmap)
           \end{itemize}
       \end{itemize}
     \end{block}

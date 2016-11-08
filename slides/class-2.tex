@@ -29,8 +29,8 @@
 \usepackage{multimedia}
 \usepackage{listings}
 \usepackage[utf8]{inputenc}
-\usepackage[frenchb]{babel}
-\usepackage{aeguill}
+%\usepackage[frenchb]{babel}
+%\usepackage{aeguill}
 \usepackage{import}
 \usepackage{ulem}
 
@@ -72,10 +72,11 @@
 \newcommand\angularmomentum{\mathbf{L}}
 \newcommand\length{\ell}
 \newcommand\yaw{\mbox{yaw}}
+\newcommand\steer{\mathcal{SM}}
 \definecolor{grey}{rgb}{0.5,0.5,0.5}
 
 
-\title {Planification de mouvement de manipulation}
+\title {Manipulation motion planning}
 
 \subtitle{}
 
@@ -106,13 +107,7 @@ tabsize=3,
   \titlepage
 \end{frame}
 
-%\input{intro}
-\begin{frame}{Planification de mouvement}
-  \tableofcontents[currentsection,currentsubsection]
-  % Vous pouvez, si vous le souhaiter ajouter l'option [pausesections]
-\end{frame}
-
 \input {manipulation}
-\input {non-linear-constraints}
+\input {be}
 
 \end{document}
