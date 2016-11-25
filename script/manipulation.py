@@ -41,8 +41,6 @@ graph.setConstraints (edge='transit',
 graph.setConstraints (edge='transfer', numConstraints = ['grasp'])
 graph.setConstraints (edge='grasp-ball',
                       numConstraints = ['placement', 'placement/complement'])
-graph.setConstraints (edge='release-ball',
-                      numConstraints = ['placement', 'placement/complement'])
 
 ## Project initial configuration on state 'placement'
 res, q_init, error = ps.client.manipulation.problem.applyConstraints \
