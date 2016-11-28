@@ -1,5 +1,7 @@
+from math import sqrt
 from hpp import Transform
-from manipulation import robot, vf, ConstraintGraph, ps, Ground, Box, Pokeball, PathPlayer, gripperName, ballName
+from hpp.corbaserver.manipulation import ConstraintGraph
+from manipulation import robot, vf, ps, Ground, Box, Pokeball, PathPlayer, gripperName, ballName
 
 vf.loadEnvironmentModel (Ground, 'ground')
 vf.loadObjectModel (Pokeball, 'pokeball')
@@ -15,14 +17,19 @@ graph = ConstraintGraph (robot, 'graph')
 
 ## Create constraint of relative position of the ball in the gripper when ball
 ## is grasped
-graph.createGrasp ('grasp', 'ur5/gripper', 'pokeball/handle')
+ballInGripper = [0, 0, 0.055, 0, -sqrt (2)/2, -sqrt (2)/2, 0]
+ps.createTransformationConstraint ('grasp', gripperName, ballName,
+                                   ballInGripper, 6*[True,])
 
 ## Create nodes and edges
+#  Warning the order of the nodes may be important. When checking in which node
+#  a configuration lies, node constraints will be checked in the order of node
+#  creation.
 graph.createNode (['grasp', 'placement'])
 graph.createEdge ('placement', 'placement', 'transit', 1, 'placement')
 graph.createEdge ('grasp', 'grasp', 'transfer', 1, 'grasp')
 graph.createEdge ('placement', 'grasp', 'grasp-ball', 1, 'placement')
-graph.createEdge ('grasp', 'placement', 'release-ball', 1, 'placement')
+graph.createEdge ('grasp', 'placement', 'release-ball', 1, 'grasp')
 
 ## Create transformation constraint : ball is in horizontal plane with free
 ## rotation around z
@@ -37,10 +44,12 @@ ps.setConstantRightHandSide ('placement/complement', False)
 graph.setConstraints (node='placement', numConstraints = ['placement'])
 graph.setConstraints (node='grasp', numConstraints = ['grasp'])
 graph.setConstraints (edge='transit',
-                      numConstraints = ['placement', 'placement/complement'])
-graph.setConstraints (edge='transfer', numConstraints = ['grasp'])
+                      numConstraints = ['placement/complement'])
 graph.setConstraints (edge='grasp-ball',
-                      numConstraints = ['placement', 'placement/complement'])
+                      numConstraints = ['placement/complement'])
+# These edges are in node 'grasp'
+graph.setConstraints (edge='transfer',     numConstraints = [])
+graph.setConstraints (edge='release-ball', numConstraints = [])
 
 ## Project initial configuration on state 'placement'
 res, q_init, error = ps.client.manipulation.problem.applyConstraints \
@@ -56,6 +65,7 @@ res, q_goal, error = ps.client.manipulation.problem.applyConstraints \
 ps.setInitialConfig (q_init)
 ps.addGoalConfig (q_goal)
 ps.selectPathValidation ("Dichotomy", 0)
+ps.selectPathProjector ("Progressive", 0.1)
 
 pp = PathPlayer (ps.client.basic, r)
 
@@ -67,7 +77,8 @@ for i in range (100):
 
 if res:
   robot.setCurrentConfig (q3)
-  gripperPose = Transform (robot.getLinkPosition (gripperName))
-  ballPose = Transform (robot.getLinkPosition (ballName))
-  gripperAboveBall = gripperPose.inverse () * ballPose
+  gripperPose = Transform (robot.getJointPosition (gripperName))
+  ballPose = Transform (robot.getJointPosition (ballName))
+  gripperGraspsBall = gripperPose.inverse () * ballPose
+  gripperAboveBall = Transform (gripperGraspsBall)
   gripperAboveBall.translation [2] += .1

@@ -1,6 +1,7 @@
 from math import sqrt
 from hpp import Transform
-from manipulation import robot, vf, ConstraintGraph, ps, Ground, Box, Pokeball, PathPlayer, gripperName, ballName
+from hpp.corbaserver.manipulation import ConstraintGraph
+from manipulation import robot, vf, ps, Ground, Box, Pokeball, PathPlayer, gripperName, ballName
 
 vf.loadEnvironmentModel (Ground, 'ground')
 vf.loadEnvironmentModel (Box, 'box')
@@ -31,6 +32,7 @@ res, q_goal, error = graph.applyNodeConstraints ('placement', q2)
 ps.setInitialConfig (q_init)
 ps.addGoalConfig (q_goal)
 ps.selectPathValidation ("Dichotomy", 0)
+ps.selectPathProjector ("Progressive", 0.1)
 
 pp = PathPlayer (ps.client.basic, r)
 
