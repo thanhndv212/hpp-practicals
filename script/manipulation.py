@@ -33,9 +33,9 @@ graph.createEdge ('grasp', 'placement', 'release-ball', 1, 'grasp')
 
 ## Create transformation constraint : ball is in horizontal plane with free
 ## rotation around z
-ps.createTransformationConstraint ('placement', 'pokeball/base_joint_SO3', '', [0,0,0.025,1,0,0,0], [False, False, True, True, True, False,])
+ps.createTransformationConstraint ('placement', ballName, '', [0,0,0.025,1,0,0,0], [False, False, True, True, True, False,])
 #  Create complement constraint
-ps.createTransformationConstraint ('placement/complement', 'pokeball/base_joint_SO3', '', [0,0,0.025,1,0,0,0], [True, True, False, False, False, True,])
+ps.createTransformationConstraint ('placement/complement', ballName, '', [0,0,0.025,1,0,0,0], [True, True, False, False, False, True,])
 
 ps.setConstantRightHandSide ('placement', True)
 ps.setConstantRightHandSide ('placement/complement', False)
