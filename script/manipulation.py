@@ -5,7 +5,7 @@ from manipulation import robot, vf, ps, Ground, Box, Pokeball, PathPlayer, gripp
 
 vf.loadEnvironmentModel (Ground, 'ground')
 vf.loadObjectModel (Pokeball, 'pokeball')
-robot.setJointBounds ('pokeball/root_joint', [-.4,.4,-.4,.4,-.1,1.,
+robot.setJointBounds ('pokeball/root_joint', [-.4,.4,-.4,.4,-.1,2.,
                                               -1.0001, 1.0001,-1.0001, 1.0001,
                                               -1.0001, 1.0001,-1.0001, 1.0001,])
 
