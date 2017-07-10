@@ -18,14 +18,14 @@ hpp-manipulation-server
 In the second terminal, type
 [source,sh]
 ----
-hpp-gui
+gepetto-gui
 ----
 
 In the third terminal, type
 [source,sh]
 ----
 cd script
-python -i manipulation.py
+python -i grasp_ball.py
 ----
 
 image::manipulation.png[width="40%",alt="hpp-gui graphical interface"]
@@ -75,14 +75,17 @@ pp (0)
 A more difficult problem
 ------------------------
 
-script +manipulation_box.py+ defines the same problem as
-+manipulation.py+, except that in the initial configuration, the ball
+script +grasp_ball_in_box.py+ defines the same problem as
++grasp_ball.py+, except that in the initial configuration, the ball
 is in a box. The resolution takes a lot more time since RRT algorithm
 needs to generate a lot of nodes before the gripper reaches the
 initial configuration of the box.
 
-Instructions
-------------
+Exercise 2
+----------
+
+Exercise 2.1
+~~~~~~~~~~~~
 
 In order to help the manipulation planner, define a constraint graph with
 intermediate states like for instance:
@@ -93,6 +96,17 @@ intermediate states like for instance:
 The graph below provides an example.
 
 image::constraintgraph.png[width="40%",alt="Constraint graph"]
+
+WARNING: In method +graph.createNode+ the order of the nodes in the list given as input is important: when checking in which node a configuration lies, node constraints will be checked in the order of node creation.
+
+Exercise 2.2
+~~~~~~~~~~~~
+
+Using the above constraint graph, write a script that builds a sequence of paths
+from +q_init+ to +q_goal+. An example of how to generate a path from +q_init+ to a grasp configuration is provided by script +solve_by_hand.py+, for the manipulation problem without box.
+
+The script, named +solve_by_hand_with_box.py+ should define a list of
+indices named +paths+ corresponding to indices in the vector of paths. Each path should be admissible with respect to the manipulation constraints, and the concatenation of the paths should start at +q_init+ and end at +q_goal+.
 
 Hints
 -----
@@ -115,3 +129,72 @@ Click on buttons "Refresh" and "Statistics" to display the current constraint gr
 By clicking on edges, you can see some statistics about the roadmap extension.
 
 image::hpp-plot-manipulation-graph-statistics.png[width="40%",alt="hpp-plot-manipulation-graph"]
+
+Some useful methods
+~~~~~~~~~~~~~~~~~~~
+[source,python]
+----
+# create a relative transformation constraint between two joints
+#
+#  name   :            name of the constraint,
+#  joint1 :            name of the first joint,
+#  joint2 :            name of the second joint,
+#  relativeTransform : relative transformation of joint2 frame in joint1 frame,
+#  mask :              list of 6 Boolean to select active coordinates of the constraint.
+ps.createTransformationConstraint (name, joint1, joint2, relativeTransform, mask)
+
+# Set whether right hand side of constraint is constant
+#
+#  name :     name of the constraint,
+#  constant : Boolean value.
+ps.setConstantRightHandSide (name, constant)
+
+# Create nodes of the constraint graph
+#
+#  nodeList: list of names of the nodes to be created.
+#
+#  note:     Nodes are ordered according to the list passed to this method. When
+#            determining to which node a configuration belongs, constraints of
+#            the nodes are tested in the creation order. As a consequence, it
+#            is important that if the subspace defined by "node1" is a subset of
+#            the subspace defined by "node2", "node1" is placed before "node2"
+#            in the input list.
+graph.createNode (nodeList)
+
+# Create an edge of the constraint graph
+#
+#  node1:     name of the node the edge starts from,
+#  node2:     name of the node the edge reaches,
+#  edgeName:  name of the edge,
+#  belongsTo: name of the node in the subspace defined by which paths of the edge lie.
+graph.createEdge (node1, node2, edgeName, weight, belongsTo)
+
+# Set constraint relative to nodes and edges
+#
+#  nodeName :   name of the node
+#  edgeName :   name of the edge
+#  constraints: list of names of constraints to be passed to the node or edge
+#
+#  note:        one and only one argument between node and edge should be
+#              provided.
+graph.setConstraints (node = nodeName, edge = edgeName, numConstraints = constraints)
+
+# Project a configuration on the supspace defined by a node
+#
+#  nodeName: name of the node,
+#  q:        input configuration.
+#
+#  return:
+#    whether projection succeeded (Boolean),
+#    projected configuration,
+#    numerical error
+graph.applyNodeConstraints (nodeName, q)
+
+# Project a configuration on a leaf of the foliation defined by an edge
+#
+#  edgeName: name of the edge,
+#  q1:       configuration defining the leaf (right hand side of constraint),
+#  q2:       configuration to project on the leaf.
+graph.generateTargetConfig (edgeName, q1, q2)
+
+----

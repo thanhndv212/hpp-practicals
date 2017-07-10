@@ -747,9 +747,9 @@ asciidoc.install(2);
 </div>
 </div>
 <div class="sect1">
-<h2 id="_instructions">Instructions</h2>
+<h2 id="_introduction">Introduction</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Open a terminal cd into /home/beisae/hpp/src/hpp-practicals directory and open 3 tab by typing CTRL+SHIFT+T twice.
+<div class="paragraph"><p>Open a terminal cd into hpp-practicals directory and open 3 tab by typing CTRL+SHIFT+T twice.
 In the first terminal, type</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
@@ -763,7 +763,7 @@ http://www.gnu.org/software/src-highlite -->
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>gepetto-viewer-server</tt></pre></div></div>
+<pre><tt>gepetto-gui</tt></pre></div></div>
 <div class="paragraph"><p>In the third terminal, type</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
@@ -782,7 +782,7 @@ python -i rrt<span style="color: #990000">.</span>py</tt></pre></div></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercise">Exercise</h2>
+<h2 id="_exercise_1">Exercise 1</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>In file <code>script/motion_planner.py</code>, remove instruction</p></div>
 <div class="listingblock">
@@ -800,6 +800,16 @@ http://www.gnu.org/software/src-highlite -->
 <pre><tt>      <span style="font-style: italic"><span style="color: #9A1900">#### RRT begin</span></span>
 
       <span style="font-style: italic"><span style="color: #9A1900">#### RRT end</span></span></tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">All classes and functions are implemented by the remote process <code>hppcorbaserver</code> called a <code>server</code>.
+Instructions in python terminal trigger computation on the server side that stores some objects.
+Those objects, mainly <code>paths</code>, <code>roadmap</code> can be accessed using the methods described at the end of this page.</td>
+</tr></table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -846,14 +856,69 @@ http://www.gnu.org/software/src-highlite -->
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>robot<span style="color: #990000">.</span>shootRandomConfig
-ps<span style="color: #990000">.</span>getNearestConfig
-ps<span style="color: #990000">.</span>directPath
-ps<span style="color: #990000">.</span>addConfigToRoadmap
-ps<span style="color: #990000">.</span>addEdgeToRoadmap
-ps<span style="color: #990000">.</span>pathLength
-ps<span style="color: #990000">.</span>configAtParam
-ps<span style="color: #990000">.</span>numberConnectedComponents</tt></pre></div></div>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># Note for all the methods below,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#   - configurations are represented by lists of float,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#   - "index of the path" means index in the vector of paths stored on the server side,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+
+
+<span style="font-style: italic"><span style="color: #9A1900"># Shoot a random configuration within bounds of robot</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># return: a configuration</span></span>
+robot<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">shootRandomConfig</span></span> <span style="color: #990000">()</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Get nearest node of given input configuration in a connected component of the  current roadmap</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  config:               the input configuration</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  connectedComponentId: the index of a connected component in the roadmap,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#                        if is negative, considers the whole roadmap</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#                        default value: -1</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># return:                nearest configuration,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#                        distance between nearest configuration and input configuration</span></span>
+ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getNearestConfig</span></span> <span style="color: #990000">(</span>config<span style="color: #990000">,</span> connectedComponentId<span style="color: #990000">=-</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Build direct path between two configurations</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  q1, q2:     start and end configurations of the direct path,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  validation: whether the path should be tested for collision,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  return :    whether the path is valid (True if validation is set to False),</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#              index of the path,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#              a string describing why the path is not valid, or empty string</span></span>
+ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">directPath</span></span> <span style="color: #990000">(</span>q1<span style="color: #990000">,</span> q2<span style="color: #990000">,</span> validation<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Add a configuration to the current roadmap</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  q: configuration</span></span>
+ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addConfigToRoadmap</span></span> <span style="color: #990000">(</span>q<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Add an edge to the current roadmap</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  q1, q2:    configurations stored in the nodes to be linked by the edge,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  pathId:    index of the path linking q1 and q2 to be stored in the edge,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  bothEdges: whether an edge between q2 and q1 should also be added.</span></span>
+ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdgeToRoadmap</span></span> <span style="color: #990000">(</span>q1<span style="color: #990000">,</span> q2<span style="color: #990000">,</span> pathId<span style="color: #990000">,</span> bothEdges<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Get length of path</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  pathId: index of the path</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  return: length of the path</span></span>
+ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">pathLength</span></span> <span style="color: #990000">(</span>pathId<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Get configuration along a path</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  pathId:    index of the path</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  parameter: parameter in interval of definition of the path</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  return: configuration of path at given parameter</span></span>
+ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">configAtParam</span></span> <span style="color: #990000">(</span>pathId<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Get the number of connected components of the current roadmap</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  return: number of connected components</span></span>
+ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">numberConnectedComponents</span></span> <span style="color: #990000">()</span></tt></pre></div></div>
 </div>
 </div>
 </div>
@@ -861,7 +926,7 @@ ps<span style="color: #990000">.</span>numberConnectedComponents</tt></pre></div
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-06-14 19:41:06 CEST
+Last updated 2017-07-07 19:00:20 CEST
 </div>
 </div>
 </body>

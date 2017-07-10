@@ -5,7 +5,7 @@ Objective
 ---------
 Program RRT algorithm in python.
 
-Instructions
+Introduction
 ------------
 Open a terminal cd into hpp-practicals directory and open 3 tab by typing CTRL+SHIFT+T twice.
 In the first terminal, type
@@ -17,7 +17,7 @@ hppcorbaserver
 In the second terminal, type
 [source,sh]
 ----
-hpp-gui
+gepetto-gui
 ----
 
 In the third terminal, type
@@ -33,8 +33,8 @@ You should see the above window displaying a manipulator robot surrounded by obs
 
 In the third terminal, you should see the message "Method solveBiRRT is not implemented yet". Open file +script/motion_planner.py+ in a text editor. The message is produced by method +solveBiRRT+ of class +MotionPlanner+.
 
-Exercise
---------
+Exercise 1
+----------
 
 In file +script/motion_planner.py+, remove instruction
 [source,python]
@@ -48,6 +48,11 @@ and implement RRT algorithm between markers
 
       #### RRT end
 ----
+
+TIP: All classes and functions are implemented by the remote process +hppcorbaserver+ called a +server+.
+Instructions in python terminal trigger computation on the server side that stores some objects.
+Those objects, mainly +paths+, +roadmap+ can be accessed using the methods described at the end of this page.
+
 
 Displaying a path
 -----------------
@@ -87,12 +92,67 @@ Some useful methods
 ~~~~~~~~~~~~~~~~~~~
 [source,python]
 ----
-robot.shootRandomConfig
-ps.getNearestConfig
-ps.directPath
-ps.addConfigToRoadmap
-ps.addEdgeToRoadmap
-ps.pathLength
-ps.configAtParam
-ps.numberConnectedComponents
+#
+# Note for all the methods below,
+#   - configurations are represented by lists of float,
+#   - "index of the path" means index in the vector of paths stored on the server side,
+#
+
+
+# Shoot a random configuration within bounds of robot
+#
+# return: a configuration
+robot.shootRandomConfig ()
+
+# Get nearest node of given input configuration in a connected component of the  current roadmap
+#
+#  config:               the input configuration
+#  connectedComponentId: the index of a connected component in the roadmap,
+#                        if is negative, considers the whole roadmap
+#                        default value: -1
+# return:                nearest configuration,
+#                        distance between nearest configuration and input configuration
+ps.getNearestConfig (config, connectedComponentId=-1)
+
+# Build direct path between two configurations
+#
+#  q1, q2:     start and end configurations of the direct path,
+#  validation: whether the path should be tested for collision,
+#
+#  return :    whether the path is valid (True if validation is set to False),
+#              index of the path,
+#              a string describing why the path is not valid, or empty string
+ps.directPath (q1, q2, validation)
+
+# Add a configuration to the current roadmap
+#
+#  q: configuration
+ps.addConfigToRoadmap (q)
+
+# Add an edge to the current roadmap
+#
+#  q1, q2:    configurations stored in the nodes to be linked by the edge,
+#  pathId:    index of the path linking q1 and q2 to be stored in the edge,
+#  bothEdges: whether an edge between q2 and q1 should also be added.
+ps.addEdgeToRoadmap (q1, q2, pathId, bothEdges)
+
+# Get length of path
+#
+#  pathId: index of the path
+#
+#  return: length of the path
+ps.pathLength (pathId)
+
+# Get configuration along a path
+#
+#  pathId:    index of the path
+#  parameter: parameter in interval of definition of the path
+#
+#  return: configuration of path at given parameter
+ps.configAtParam (pathId)
+
+# Get the number of connected components of the current roadmap
+#
+#  return: number of connected components
+ps.numberConnectedComponents ()
 ----

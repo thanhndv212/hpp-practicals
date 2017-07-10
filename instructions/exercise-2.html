@@ -749,7 +749,7 @@ asciidoc.install(2);
 <div class="sect1">
 <h2 id="_introduction">Introduction</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Open a terminal, cd into be-isae directory and open 3 tab by typing CTRL+SHIFT+T
+<div class="paragraph"><p>Open a terminal, cd into hpp-practicals directory and open 3 tab by typing CTRL+SHIFT+T
 twice. In the first terminal, type</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
@@ -763,7 +763,7 @@ http://www.gnu.org/software/src-highlite -->
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>hpp-gui</tt></pre></div></div>
+<pre><tt>gepetto-gui</tt></pre></div></div>
 <div class="paragraph"><p>In the third terminal, type</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
@@ -771,7 +771,7 @@ by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt>cd script
-python -i manipulation<span style="color: #990000">.</span>py</tt></pre></div></div>
+python -i grasp_ball<span style="color: #990000">.</span>py</tt></pre></div></div>
 <div class="imageblock">
 <div class="content">
 <img src="manipulation.png" alt="hpp-gui graphical interface" width="40%" />
@@ -826,16 +826,18 @@ http://www.gnu.org/software/src-highlite -->
 <div class="sect1">
 <h2 id="_a_more_difficult_problem">A more difficult problem</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>script <code>manipulation_box.py</code> defines the same problem as
-<code>manipulation.py</code>, except that in the initial configuration, the ball
+<div class="paragraph"><p>script <code>grasp_ball_in_box.py</code> defines the same problem as
+<code>grasp_ball.py</code>, except that in the initial configuration, the ball
 is in a box. The resolution takes a lot more time since RRT algorithm
 needs to generate a lot of nodes before the gripper reaches the
 initial configuration of the box.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_instructions">Instructions</h2>
+<h2 id="_exercise_2">Exercise 2</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_exercise_2_1">Exercise 2.1</h3>
 <div class="paragraph"><p>In order to help the manipulation planner, define a constraint graph with
 intermediate states like for instance:</p></div>
 <div class="ulist"><ul>
@@ -855,6 +857,22 @@ a state where the gripper holds the ball above the ground.
 <div class="content">
 <img src="constraintgraph.png" alt="Constraint graph" width="40%" />
 </div>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/warning.png" alt="Warning" />
+</td>
+<td class="content">In method <code>graph.createNode</code> the order of the nodes in the list given as input is important: when checking in which node a configuration lies, node constraints will be checked in the order of node creation.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_exercise_2_2">Exercise 2.2</h3>
+<div class="paragraph"><p>Using the above constraint graph, write a script that builds a sequence of paths
+from <code>q_init</code> to <code>q_goal</code>. An example of how to generate a path from <code>q_init</code> to a grasp configuration is provided by script <code>solve_by_hand.py</code>, for the manipulation problem without box.</p></div>
+<div class="paragraph"><p>The script, named <code>solve_by_hand_with_box.py</code> should define a list of
+indices named <code>paths</code> corresponding to indices in the vector of paths. Each path should be admissible with respect to the manipulation constraints, and the concatenation of the paths should start at <code>q_init</code> and end at <code>q_goal</code>.</p></div>
 </div>
 </div>
 </div>
@@ -884,13 +902,84 @@ http://www.gnu.org/software/src-highlite -->
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_some_useful_methods">Some useful methods</h3>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># create a relative transformation constraint between two joints</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  name   :            name of the constraint,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  joint1 :            name of the first joint,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  joint2 :            name of the second joint,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  relativeTransform : relative transformation of joint2 frame in joint1 frame,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  mask :              list of 6 Boolean to select active coordinates of the constraint.</span></span>
+ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">createTransformationConstraint</span></span> <span style="color: #990000">(</span>name<span style="color: #990000">,</span> joint1<span style="color: #990000">,</span> joint2<span style="color: #990000">,</span> relativeTransform<span style="color: #990000">,</span> mask<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Set whether right hand side of constraint is constant</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  name :     name of the constraint,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  constant : Boolean value.</span></span>
+ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setConstantRightHandSide</span></span> <span style="color: #990000">(</span>name<span style="color: #990000">,</span> constant<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Create nodes of the constraint graph</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  nodeList: list of names of the nodes to be created.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  note:     Nodes are ordered according to the list passed to this method. When</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#            determining to which node a configuration belongs, constraints of</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#            the nodes are tested in the creation order. As a consequence, it</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#            is important that if the subspace defined by "node1" is a subset of</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#            the subspace defined by "node2", "node1" is placed before "node2"</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#            in the input list.</span></span>
+graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">createNode</span></span> <span style="color: #990000">(</span>nodeList<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Create an edge of the constraint graph</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  node1:     name of the node the edge starts from,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  node2:     name of the node the edge reaches,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  edgeName:  name of the edge,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  belongsTo: name of the node in the subspace defined by which paths of the edge lie.</span></span>
+graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">createEdge</span></span> <span style="color: #990000">(</span>node1<span style="color: #990000">,</span> node2<span style="color: #990000">,</span> edgeName<span style="color: #990000">,</span> weight<span style="color: #990000">,</span> belongsTo<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Set constraint relative to nodes and edges</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  nodeName :   name of the node</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  edgeName :   name of the edge</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  constraints: list of names of constraints to be passed to the node or edge</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  note:        one and only one argument between node and edge should be</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#              provided.</span></span>
+graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setConstraints</span></span> <span style="color: #990000">(</span>node <span style="color: #990000">=</span> nodeName<span style="color: #990000">,</span> edge <span style="color: #990000">=</span> edgeName<span style="color: #990000">,</span> numConstraints <span style="color: #990000">=</span> constraints<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Project a configuration on the supspace defined by a node</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  nodeName: name of the node,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  q:        input configuration.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  return:</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#    whether projection succeeded (Boolean),</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#    projected configuration,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#    numerical error</span></span>
+graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">applyNodeConstraints</span></span> <span style="color: #990000">(</span>nodeName<span style="color: #990000">,</span> q<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># Project a configuration on a leaf of the foliation defined by an edge</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  edgeName: name of the edge,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  q1:       configuration defining the leaf (right hand side of constraint),</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  q2:       configuration to project on the leaf.</span></span>
+graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">generateTargetConfig</span></span> <span style="color: #990000">(</span>edgeName<span style="color: #990000">,</span> q1<span style="color: #990000">,</span> q2<span style="color: #990000">)</span>
+</tt></pre></div></div>
+</div>
 </div>
 </div>
 </div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-06-22 14:12:00 CEST
+Last updated 2017-07-08 11:30:15 CEST
 </div>
 </div>
 </body>
