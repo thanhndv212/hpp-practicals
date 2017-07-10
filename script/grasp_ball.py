@@ -24,7 +24,7 @@ ps.createTransformationConstraint ('grasp', gripperName, ballName,
                                    ballInGripper, 6*[True,])
 
 ## Create nodes and edges
-#  Warning the order of the nodes may be important. When checking in which node
+#  Warning the order of the nodes is important. When checking in which node
 #  a configuration lies, node constraints will be checked in the order of node
 #  creation.
 graph.createNode (['grasp', 'placement'])
@@ -55,14 +55,12 @@ graph.setConstraints (edge='transfer',     numConstraints = [])
 graph.setConstraints (edge='release-ball', numConstraints = [])
 
 ## Project initial configuration on state 'placement'
-res, q_init, error = ps.client.manipulation.problem.applyConstraints \
-                     (graph.nodes ['placement'], q1)
+res, q_init, error = graph.applyNodeConstraints ('placement', q1)
 q2 = q1 [::]
 q2 [7] = .2
 
 ## Project goal configuration on state 'placement'
-res, q_goal, error = ps.client.manipulation.problem.applyConstraints \
-                     (graph.nodes ['placement'], q2)
+res, q_goal, error = graph.applyNodeConstraints ('placement', q2)
 
 ## Define manipulation planning problem
 ps.setInitialConfig (q_init)
