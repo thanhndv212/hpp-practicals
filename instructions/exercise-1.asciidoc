@@ -33,29 +33,25 @@ You should see the above window displaying a manipulator robot surrounded by obs
 
 In the third terminal, you should see the message "Method solveBiRRT is not implemented yet". Open file +script/motion_planner.py+ in a text editor. The message is produced by method +solveBiRRT+ of class +MotionPlanner+.
 
-Exercise 1
-----------
+Before starting
+---------------
 
-In file +script/motion_planner.py+, remove instruction
-[source,python]
-----
-    print ("Method solveBiRRT is not implemented yet")
-----
-and implement RRT algorithm between markers
-[source,python]
-----
-      #### RRT begin
-
-      #### RRT end
-----
-
-TIP: All classes and functions are implemented by the remote process +hppcorbaserver+ called a +server+.
+All classes and functions are implemented by the remote process +hppcorbaserver+ called a +server+.
 Instructions in python terminal trigger computation on the server side that stores some objects.
-Those objects, mainly +paths+, +roadmap+ can be accessed using the methods described at the end of this page.
+The server stores a +roadmap+ composed of nodes and of edges. Nodes contain
+configurations. Edges contain paths. The roadmap can be extended using methods
 
+* +ps.addConfigToRoadmap+,
+* +ps.addEdgeToRoadmap+.
+
+Calls to method +ps.directPath+ creates a new path between two configurations. This path is stored in a vector on the server side and can be accessed by the
+index in the vector.
+
+See Section "Some useful methods" below.
 
 Displaying a configuration or a path
------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 While running, your RRT algorithm will produce configurations and paths to store in the roadmap
 edges. To display a configuration +q+ in the viewer, use
 [source,python]
@@ -76,7 +72,7 @@ pp (pid)
 ----
 
 Hint
-----
+~~~~
 
 You can use methods of objects +robot+ and +ps+. To get the list of these
 methods with documentation, type in the python terminal
@@ -126,9 +122,12 @@ ps.getNearestConfig (config, connectedComponentId=-1)
 #  q1, q2:     start and end configurations of the direct path,
 #  validation: whether the path should be tested for collision,
 #
-#  return :    whether the path is valid (True if validation is set to False),
+#  return:     whether the path is valid (True if validation is set to False),
 #              index of the path,
-#              a string describing why the path is not valid, or empty string
+#              a string describing why the path is not valid, or empty string.
+#
+#  note:       When the path between q1 and q2 is not valid, the method returns
+#              a part of the path starting at q1 and ending before collision.
 ps.directPath (q1, q2, validation)
 
 # Add a configuration to the current roadmap
@@ -147,13 +146,15 @@ ps.addEdgeToRoadmap (q1, q2, pathId, bothEdges)
 #
 #  pathId: index of the path
 #
-#  return: length of the path
+#  return: length of the path. The interval of definition of the path starts at
+#          0 and ends at the path length.
 ps.pathLength (pathId)
 
 # Get configuration along a path
 #
 #  pathId:    index of the path
 #  parameter: parameter in interval of definition of the path
+#             (see method pathLength)
 #
 #  return: configuration of path at given parameter
 ps.configAtParam (pathId, parameter)
@@ -162,4 +163,23 @@ ps.configAtParam (pathId, parameter)
 #
 #  return: number of connected components
 ps.numberConnectedComponents ()
+----
+
+Before starting we recommend that you play a little with the above methods,
+creating and displaying some configurations and paths in the +python+ terminal.
+
+Exercise 1
+----------
+
+In file +script/motion_planner.py+, remove instruction
+[source,python]
+----
+    print ("Method solveBiRRT is not implemented yet")
+----
+and implement RRT algorithm between markers
+[source,python]
+----
+      #### RRT begin
+
+      #### RRT end
 ----

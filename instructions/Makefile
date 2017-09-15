@@ -1,4 +1,5 @@
 SOURCES = \
+	corba.asciidoc \
 	exercise-1.asciidoc \
 	exercise-2.asciidoc
 

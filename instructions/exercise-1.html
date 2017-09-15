@@ -782,46 +782,37 @@ python -i rrt<span style="color: #990000">.</span>py</tt></pre></div></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercise_1">Exercise 1</h2>
+<h2 id="_before_starting">Before starting</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>In file <code>script/motion_planner.py</code>, remove instruction</p></div>
-<div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>    <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">(</span><span style="color: #FF0000">"Method solveBiRRT is not implemented yet"</span><span style="color: #990000">)</span></tt></pre></div></div>
-<div class="paragraph"><p>and implement RRT algorithm between markers</p></div>
-<div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>      <span style="font-style: italic"><span style="color: #9A1900">#### RRT begin</span></span>
-
-      <span style="font-style: italic"><span style="color: #9A1900">#### RRT end</span></span></tt></pre></div></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="./images/icons/tip.png" alt="Tip" />
-</td>
-<td class="content">All classes and functions are implemented by the remote process <code>hppcorbaserver</code> called a <code>server</code>.
+<div class="paragraph"><p>All classes and functions are implemented by the remote process <code>hppcorbaserver</code> called a <code>server</code>.
 Instructions in python terminal trigger computation on the server side that stores some objects.
-Those objects, mainly <code>paths</code>, <code>roadmap</code> can be accessed using the methods described at the end of this page.</td>
-</tr></table>
-</div>
-<div class="paragraph"><p>Displaying a configuration or a path</p></div>
+The server stores a <code>roadmap</code> composed of nodes and of edges. Nodes contain
+configurations. Edges contain paths. The roadmap can be extended using methods</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>ps.addConfigToRoadmap</code>,
+</p>
+</li>
+<li>
+<p>
+<code>ps.addEdgeToRoadmap</code>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Calls to method <code>ps.directPath</code> creates a new path between two configurations. This path is stored in a vector on the server side and can be accessed by the
+index in the vector.</p></div>
+<div class="paragraph"><p>See Section "Some useful methods" below.</p></div>
+<div class="sect2">
+<h3 id="_displaying_a_configuration_or_a_path">Displaying a configuration or a path</h3>
+<div class="paragraph"><p>While running, your RRT algorithm will produce configurations and paths to store in the roadmap
+edges. To display a configuration <code>q</code> in the viewer, use</p></div>
 <div class="listingblock">
-<div class="content">
-<pre><code>While running, your RRT algorithm will produce configurations and paths to store in the roadmap
-edges. To display a configuration +q+ in the viewer, use
-[source,python]</code></pre>
-</div></div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_r_q">r (q)</h2>
-<div class="sectionbody">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">r</span></span> <span style="color: #990000">(</span>q<span style="color: #990000">)</span></tt></pre></div></div>
 <div class="paragraph"><p>Functions that create a path (such as <code>directPath</code> below) appends
 the created path to a vector. The path can be displayed by the path
 player <code>pp</code>. To display the result of your algorithm, type</p></div>
@@ -835,10 +826,8 @@ http://www.gnu.org/software/src-highlite -->
 
 <span style="font-weight: bold"><span style="color: #000000">pp</span></span> <span style="color: #990000">(</span>pid<span style="color: #990000">)</span></tt></pre></div></div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_hint">Hint</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_hint">Hint</h3>
 <div class="paragraph"><p>You can use methods of objects <code>robot</code> and <code>ps</code>. To get the list of these
 methods with documentation, type in the python terminal</p></div>
 <div class="listingblock">
@@ -856,6 +845,7 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt>    self<span style="color: #990000">.</span>robot
     self<span style="color: #990000">.</span>ps</tt></pre></div></div>
+</div>
 <div class="sect2">
 <h3 id="_some_useful_methods">Some useful methods</h3>
 <div class="listingblock">
@@ -890,9 +880,12 @@ ps<span style="color: #990000">.</span><span style="font-weight: bold"><span sty
 <span style="font-style: italic"><span style="color: #9A1900">#  q1, q2:     start and end configurations of the direct path,</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  validation: whether the path should be tested for collision,</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#</span></span>
-<span style="font-style: italic"><span style="color: #9A1900">#  return :    whether the path is valid (True if validation is set to False),</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  return:     whether the path is valid (True if validation is set to False),</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#              index of the path,</span></span>
-<span style="font-style: italic"><span style="color: #9A1900">#              a string describing why the path is not valid, or empty string</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#              a string describing why the path is not valid, or empty string.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  note:       When the path between q1 and q2 is not valid, the method returns</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#              a part of the path starting at q1 and ending before collision.</span></span>
 ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">directPath</span></span> <span style="color: #990000">(</span>q1<span style="color: #990000">,</span> q2<span style="color: #990000">,</span> validation<span style="color: #990000">)</span>
 
 <span style="font-style: italic"><span style="color: #9A1900"># Add a configuration to the current roadmap</span></span>
@@ -911,13 +904,15 @@ ps<span style="color: #990000">.</span><span style="font-weight: bold"><span sty
 <span style="font-style: italic"><span style="color: #9A1900">#</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  pathId: index of the path</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#</span></span>
-<span style="font-style: italic"><span style="color: #9A1900">#  return: length of the path</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  return: length of the path. The interval of definition of the path starts at</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#          0 and ends at the path length.</span></span>
 ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">pathLength</span></span> <span style="color: #990000">(</span>pathId<span style="color: #990000">)</span>
 
 <span style="font-style: italic"><span style="color: #9A1900"># Get configuration along a path</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  pathId:    index of the path</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  parameter: parameter in interval of definition of the path</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#             (see method pathLength)</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  return: configuration of path at given parameter</span></span>
 ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">configAtParam</span></span> <span style="color: #990000">(</span>pathId<span style="color: #990000">,</span> parameter<span style="color: #990000">)</span>
@@ -926,14 +921,37 @@ ps<span style="color: #990000">.</span><span style="font-weight: bold"><span sty
 <span style="font-style: italic"><span style="color: #9A1900">#</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  return: number of connected components</span></span>
 ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">numberConnectedComponents</span></span> <span style="color: #990000">()</span></tt></pre></div></div>
+<div class="paragraph"><p>Before starting we recommend that you play a little with the above methods,
+creating and displaying some configurations and paths in the <code>python</code> terminal.</p></div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exercise_1">Exercise 1</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In file <code>script/motion_planner.py</code>, remove instruction</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>    <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> <span style="color: #990000">(</span><span style="color: #FF0000">"Method solveBiRRT is not implemented yet"</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>and implement RRT algorithm between markers</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>      <span style="font-style: italic"><span style="color: #9A1900">#### RRT begin</span></span>
+
+      <span style="font-style: italic"><span style="color: #9A1900">#### RRT end</span></span></tt></pre></div></div>
 </div>
 </div>
 </div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-09-15 14:26:11 CEST
+Last updated 2017-09-15 15:09:41 CEST
 </div>
 </div>
 </body>
