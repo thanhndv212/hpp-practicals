@@ -149,7 +149,7 @@ ps.pathLength (pathId)
 #  parameter: parameter in interval of definition of the path
 #
 #  return: configuration of path at given parameter
-ps.configAtParam (pathId)
+ps.configAtParam (pathId, parameter)
 
 # Get the number of connected components of the current roadmap
 #
