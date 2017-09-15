@@ -54,10 +54,17 @@ Instructions in python terminal trigger computation on the server side that stor
 Those objects, mainly +paths+, +roadmap+ can be accessed using the methods described at the end of this page.
 
 
-Displaying a path
+Displaying a configuration or a path
 -----------------
-While running, your RRT algorithm will produce paths to store in the roadmap
-edges. Those paths are stored in a vector and can be displayed by the path
+While running, your RRT algorithm will produce configurations and paths to store in the roadmap
+edges. To display a configuration +q+ in the viewer, use
+[source,python]
+----
+r (q)
+----
+
+Functions that create a path (such as +directPath+ below) appends
+the created path to a vector. The path can be displayed by the path
 player +pp+. To display the result of your algorithm, type
 
 [source,python]

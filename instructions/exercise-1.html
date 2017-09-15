@@ -810,13 +810,20 @@ Instructions in python terminal trigger computation on the server side that stor
 Those objects, mainly <code>paths</code>, <code>roadmap</code> can be accessed using the methods described at the end of this page.</td>
 </tr></table>
 </div>
+<div class="paragraph"><p>Displaying a configuration or a path</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>While running, your RRT algorithm will produce configurations and paths to store in the roadmap
+edges. To display a configuration +q+ in the viewer, use
+[source,python]</code></pre>
+</div></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_displaying_a_path">Displaying a path</h2>
+<h2 id="_r_q">r (q)</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>While running, your RRT algorithm will produce paths to store in the roadmap
-edges. Those paths are stored in a vector and can be displayed by the path
+<div class="paragraph"><p>Functions that create a path (such as <code>directPath</code> below) appends
+the created path to a vector. The path can be displayed by the path
 player <code>pp</code>. To display the result of your algorithm, type</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
@@ -926,7 +933,7 @@ ps<span style="color: #990000">.</span><span style="font-weight: bold"><span sty
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-09-15 14:17:21 CEST
+Last updated 2017-09-15 14:26:11 CEST
 </div>
 </div>
 </body>
