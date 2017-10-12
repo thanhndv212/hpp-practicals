@@ -65,8 +65,14 @@ Constraints to which manipulation motions are subject can be expressed numerical
 \begin{itemize}
 \item Numerical constraints:
   $$f (\conf) = 0,\ \ \ \begin{array}{l}m\in\entiernaturel,\\ f\in C^1(\CS,\real^m)\end{array} $$
+  \begin{itemize}
+    \item \texttt{\scriptsize setConstantRightHandSide(True)}
+  \end{itemize}
 \item Parameterizable numerical constraints:
   $$f (\conf) = f_0,\ \ \ \begin{array}{l}m\in\entiernaturel,\\ f\in C^1(\CS,\real^m) \\ f_0\in\real^m\end{array} $$
+  \begin{itemize}
+    \item \texttt{\scriptsize setConstantRightHandSide(False)}
+  \end{itemize}
 \end{itemize}
 
 \end{frame}
