@@ -24,6 +24,7 @@ r (q1)
 graph = ConstraintGraph (robot, 'graph')
 
 
+graph.initialize ()
 
 res, q_init, error = graph.applyNodeConstraints ('placement', q1)
 q2 = q1 [::]
