@@ -1,6 +1,6 @@
 from math import sqrt
 from hpp import Transform
-from hpp.corbaserver.manipulation import ConstraintGraph
+from hpp.corbaserver.manipulation import ConstraintGraph, Constraints
 from manipulation import robot, vf, ps, Ground, Box, Pokeball, PathPlayer, gripperName, ballName
 
 vf.loadEnvironmentModel (Ground, 'ground')
@@ -44,15 +44,18 @@ ps.setConstantRightHandSide ('placement', True)
 ps.setConstantRightHandSide ('placement/complement', False)
 
 ## Set constraints of nodes and edges
-graph.setConstraints (node='placement', numConstraints = ['placement'])
-graph.setConstraints (node='grasp', numConstraints = ['grasp'])
-graph.setConstraints (edge='transit',
-                      numConstraints = ['placement/complement'])
-graph.setConstraints (edge='grasp-ball',
-                      numConstraints = ['placement/complement'])
+graph.setConstraints (node='placement', constraints = \
+                      Constraints (numConstraints = ['placement'],))
+graph.setConstraints (node='grasp',
+                      constraints = Constraints (numConstraints = ['grasp']))
+graph.setConstraints (edge='transit', constraints = \
+                      Constraints (numConstraints = ['placement/complement']))
+graph.setConstraints (edge='grasp-ball', constraints = \
+                      Constraints (numConstraints = ['placement/complement']))
 # These edges are in node 'grasp'
-graph.setConstraints (edge='transfer',     numConstraints = [])
-graph.setConstraints (edge='release-ball', numConstraints = [])
+graph.setConstraints (edge='transfer',     constraints = Constraints ())
+graph.setConstraints (edge='release-ball', constraints = Constraints ())
+graph.initialize ()
 
 ## Project initial configuration on state 'placement'
 res, q_init, error = graph.applyNodeConstraints ('placement', q1)
@@ -68,7 +71,7 @@ ps.addGoalConfig (q_goal)
 ps.selectPathValidation ("Dichotomy", 0)
 ps.selectPathProjector ("Progressive", 0.1)
 
-pp = PathPlayer (ps.client.basic, r)
+pp = PathPlayer (r, ps.client.basic)
 
 ## Build relative position of the ball with respect to the gripper
 for i in range (100):
