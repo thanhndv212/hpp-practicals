@@ -24,6 +24,8 @@ r (q1)
 graph = ConstraintGraph (robot, 'graph')
 
 
+ps.selectPathValidation ("Discretized", 0.01)
+ps.selectPathProjector ("Progressive", 0.1)
 graph.initialize ()
 
 res, q_init, error = graph.applyNodeConstraints ('placement', q1)
@@ -34,8 +36,6 @@ res, q_goal, error = graph.applyNodeConstraints ('placement', q2)
 
 ps.setInitialConfig (q_init)
 ps.addGoalConfig (q_goal)
-ps.selectPathValidation ("Discretized", 0.01)
-ps.selectPathProjector ("Progressive", 0.1)
 
 pp = PathPlayer (ps.client.basic, r)
 

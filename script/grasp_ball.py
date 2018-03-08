@@ -35,10 +35,13 @@ graph.createEdge ('grasp', 'placement', 'release-ball', 1, 'grasp')
 
 ## Create transformation constraint : ball is in horizontal plane with free
 ## rotation around z
-
-ps.createTransformationConstraint ('placement', '', ballName, [0,0,0.025,0, 0, 0, 1], [False, False, True, True, True, False,])
+ps.createTransformationConstraint ('placement', '', ballName,
+                                   [0,0,0.025,0, 0, 0, 1],
+                                   [False, False, True, True, True, False,])
 #  Create complement constraint
-ps.createTransformationConstraint ('placement/complement', '', ballName, [0,0,0.025,0, 0, 0, 1], [True, True, False, False, False, True,])
+ps.createTransformationConstraint ('placement/complement', '', ballName,
+                                   [0,0,0.025,0, 0, 0, 1],
+                                   [True, True, False, False, False, True,])
 
 ps.setConstantRightHandSide ('placement', True)
 ps.setConstantRightHandSide ('placement/complement', False)
@@ -55,6 +58,8 @@ graph.setConstraints (edge='grasp-ball', constraints = \
 # These edges are in node 'grasp'
 graph.setConstraints (edge='transfer',     constraints = Constraints ())
 graph.setConstraints (edge='release-ball', constraints = Constraints ())
+ps.selectPathValidation ("Dichotomy", 0)
+ps.selectPathProjector ("Progressive", 0.1)
 graph.initialize ()
 
 ## Project initial configuration on state 'placement'
@@ -68,8 +73,6 @@ res, q_goal, error = graph.applyNodeConstraints ('placement', q2)
 ## Define manipulation planning problem
 ps.setInitialConfig (q_init)
 ps.addGoalConfig (q_goal)
-ps.selectPathValidation ("Dichotomy", 0)
-ps.selectPathProjector ("Progressive", 0.1)
 
 pp = PathPlayer (r, ps.client.basic)
 
