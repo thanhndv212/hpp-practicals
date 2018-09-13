@@ -1,0 +1,113 @@
+\documentclass[10pt]{exam}
+\usepackage{etoolbox}
+\usepackage{menukeys}
+%\usepackage[obeyspaces]{url}
+\usepackage[bookmarks]{hyperref}
+\usepackage{listings}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+
+%\usepackage{exercise}
+%\renewcommand\ExerciseName{Question~}
+%\renewcommand\AnswerName{Answer to question}
+%\renewcommand\ExerciseHeader{%
+%  \noindent\parbox[t]{.18\textwidth}{%
+%    \bfseries\large\ExerciseName\ExerciseHeaderNB\hfill}%
+%  \parbox[t]{.72\textwidth}{%
+%    \centering\bfseries\large%
+%    \ExerciseHeaderTitle\ExerciseHeaderOrigin}%
+%  \par\medskip
+%}
+
+%~ \printanswers
+\newcommand\getcurrentref[1]{%
+ \ifnumequal{\value{#1}}{0}
+  {??}
+  {\the\value{#1}}%
+} 
+\qformat{\textbf{Question} \getcurrentref{section}.\thequestion \hfill}
+\bonusqformat{\textbf{Question (Bonus)} \getcurrentref{section}.\thequestion \hfill}
+
+
+\begin{document}
+%\begin{Exercise}
+%\lipsum[2]
+%\end{Exercise}
+
+\section{Introduction}
+This document contains a set of preliminary questions that should help you getting acquainted with HPP and the Python environment.
+The questions are optional, and your answers should be directly prompted in the python shell (third terminal).
+
+%~ \section{Motion planning}
+
+\begin{questions}
+\question Shoot a random configuration and display it. Find its nearest neighbour in each connected component. Connected component are indexed by a number, and we recall
+that only two connected components are used in this context.
+
+\begin{solutionorlines}
+\begin{lstlisting}[language=python]
+qrand = robot.shootRandomConfig ()
+viewer (qrand)
+qnear, dist = ps.getNearestNeighbor (qrand, 0)
+qnear, dist = ps.getNearestNeighbor (qrand, 1)
+\end{lstlisting}
+\end{solutionorlines}
+
+\question Build a direct path between configurations $q1$ and $q2$. Do the same between $q2$ and $q3$. Visualize the paths obtained with or without 
+setting the validation parameter to True. Explain the differences.
+\begin{solutionorlines}
+\begin{lstlisting}[language=python]
+valid12 , index12  = ps.directPath (q1, q2, False)
+valid12v, index12v = ps.directPath (q1, q2, True )
+pp(index12)
+pp(index12v)
+\end{lstlisting}
+\end{solutionorlines}
+
+\question Write a piece of code that retrieves the last configuration of a path, then displays it.
+\begin{solutionorlines}
+\begin{lstlisting}[language=python]
+valid12 , index12  = ps.directPath (q1, q2, False)
+valid12v, index12v = ps.directPath (q1, q2, True )
+pp(index12)
+pp(index12v)
+\end{lstlisting}
+\end{solutionorlines}
+
+\question Write a small routine that shoots a random configuration, then tries to connect the nearest neighbour of the first connected component to this configuration.
+The routine should return the valid portion of the path. Write a similar routine for the second connected component. Pay extra care to the actual
+path that is relevant in this case. Vizualize the generated path to validate your answer.
+\begin{solutionorlines}
+\begin{lstlisting}[language=python]
+todo
+\end{lstlisting}
+\end{solutionorlines}
+
+\question Add the configurations and the paths from the previous question to the roadmap. You must first add the new configuration(s) to the roadmap, before
+connecting the edges.
+\begin{solutionorlines}
+\begin{lstlisting}[language=python]
+ps.addConfigToRoadmap (q0)
+ps.addConfigToRoadmap (q1)
+ps.addEdgeToRoadmap (q0, q1, valid01, True)
+q3 = ps.configAtParam (index02, ps.pathLength (index02))
+ps.addConfigToRoadmap (q0, q3, index02, True)
+\end{lstlisting}
+\end{solutionorlines}
+
+\question Get the number of connected components and find the nearest neighbour of a random configuration in each connected components.
+\begin{solutionorlines}
+\begin{lstlisting}[language=python]
+qrand = robot.shootRandomConfig ()
+for i in range(ps.numberConnectedComponents ()):
+  qnear, dist = ps.getNearestNeighbor (qrand, i)
+\end{lstlisting}
+\end{solutionorlines}
+
+\question Implement a RRT algorithm in the function \textbf{solveRRT} in file \url{script/motionplanner.py}.
+
+\end{questions}
+
+\end{document}
