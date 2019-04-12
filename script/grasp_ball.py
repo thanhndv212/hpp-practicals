@@ -9,10 +9,8 @@ robot.setJointBounds ('pokeball/root_joint', [-.4,.4,-.4,.4,-.1,2.,
                                               -1.0001, 1.0001,-1.0001, 1.0001,
                                               -1.0001, 1.0001,-1.0001, 1.0001,])
 
-r = vf.createViewer ()
 
 q1 = [0, -1.57, 1.57, 0, 0, 0, .3, 0, 0.025, 0, 0, 0, 1]
-r (q1)
 
 ## Create constraint graph
 graph = ConstraintGraph (robot, 'graph')
@@ -74,7 +72,9 @@ res, q_goal, error = graph.applyNodeConstraints ('placement', q2)
 ps.setInitialConfig (q_init)
 ps.addGoalConfig (q_goal)
 
-pp = PathPlayer (r, ps.client.basic)
+# v = vf.createViewer ()
+# pp = PathPlayer (v)
+# v (q1)
 
 ## Build relative position of the ball with respect to the gripper
 for i in range (100):

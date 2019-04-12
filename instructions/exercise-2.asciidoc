@@ -12,7 +12,7 @@ Open a terminal, cd into hpp-practicals directory and open 3 tab by typing CTRL+
 twice. In the first terminal, type
 [source,sh]
 ----
-hpp-manipulation-server
+hppcorbaserver
 ----
 
 In the second terminal, type
@@ -36,8 +36,8 @@ the script by typing respectively
 
 [source,python]
 ----
-r (q_init)
-r (q_goal)
+v (q_init)
+v (q_goal)
 ----
 
 Displaying the constraint graph

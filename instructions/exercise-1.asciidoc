@@ -56,7 +56,7 @@ While running, your RRT algorithm will produce configurations and paths to store
 edges. To display a configuration +q+ in the viewer, use
 [source,python]
 ----
-r (q)
+v (q)
 ----
 
 Functions that create a path (such as +directPath+ below) appends

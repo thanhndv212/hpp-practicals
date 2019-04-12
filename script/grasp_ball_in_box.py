@@ -15,10 +15,7 @@ robot.setJointBounds ('pokeball/root_joint', [-.4,.4,-.4,.4,-.1,1.,
                                               -1.0001, 1.0001,-1.0001, 1.0001,
                                               -1.0001, 1.0001,-1.0001, 1.0001,])
 
-r = vf.createViewer ()
-
 q1 = [0, -1.57, 1.57, 0, 0, 0, .3, 0, 0.025, 0, 0, 0, 1]
-r (q1)
 
 ## Create graph
 graph = ConstraintGraph (robot, 'graph')
@@ -37,5 +34,7 @@ res, q_goal, error = graph.applyNodeConstraints ('placement', q2)
 ps.setInitialConfig (q_init)
 ps.addGoalConfig (q_goal)
 
-pp = PathPlayer (ps.client.basic, r)
+# v = vf.createViewer ()
+# pp = PathPlayer (v)
+# v (q1)
 

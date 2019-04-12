@@ -1,7 +1,10 @@
 from hpp.corbaserver.practicals.manipulation.ur5 import Robot
-from hpp.corbaserver.manipulation import ProblemSolver
+from hpp.corbaserver.manipulation import ProblemSolver, Client
 from hpp.gepetto.manipulation import ViewerFactory
 from hpp.gepetto import PathPlayer
+from hpp.corbaserver import loadServerPlugin
+loadServerPlugin ("corbaserver", "manipulation-corba.so")
+Client ().problem.resetProblem ()
 
 Robot.urdfName = "ur5_gripper"
 Robot.urdfSuffix = ""
