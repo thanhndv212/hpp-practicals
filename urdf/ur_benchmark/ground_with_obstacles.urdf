@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<robot name="ground">
+  <link name="ground_base">
+    <!--
+        VISUAL
+        -->
+    <visual>
+      <!-- Ground -->
+      <geometry>
+        <box size="1 1 0.02"/>
+      </geometry>
+      <origin xyz="0 0 -0.01"/>
+      <material name="Orange">
+        <color rgba="1 0.4 0.3 0.6"/>
+      </material>
+    </visual>
+    <visual>
+      <!-- Obstacle in front -->
+      <geometry>
+        <box size="0.2 0.02 0.3"/>
+      </geometry>
+      <origin xyz="0.4 0 0.15"/>
+      <material name="Orange">
+        <color rgba="1 0.4 0.3 0.6"/>
+      </material>
+    </visual>
+    <visual>
+      <!-- Obstacle in rear -->
+      <geometry>
+        <box size="0.2 0.02 0.3"/>
+      </geometry>
+      <origin xyz="-0.4 0 0.15"/>
+      <material name="Orange">
+        <color rgba="1 0.4 0.3 0.6"/>
+      </material>
+    </visual>
+    <!--
+        COLLISION
+        -->
+    <collision>
+      <!-- Ground -->
+      <geometry>
+        <box size="1 1 0.02"/>
+      </geometry>
+      <origin xyz="0 0 -0.01"/>
+      <material name="Orange">
+        <color rgba="1 0.4 0.3 0.6"/>
+      </material>
+    </collision>
+    <collision>
+      <!-- Obstacle in front -->
+      <geometry>
+        <box size="0.2 0.02 0.3"/>
+      </geometry>
+      <origin xyz="0.4 0 0.15"/>
+      <material name="Orange">
+        <color rgba="1 0.4 0.3 0.6"/>
+      </material>
+    </collision>
+    <collision>
+      <!-- Obstacle in rear -->
+      <geometry>
+        <box size="0.2 0.02 0.3"/>
+      </geometry>
+      <origin xyz="-0.4 0 0.15"/>
+      <material name="Orange">
+        <color rgba="1 0.4 0.3 0.6"/>
+      </material>
+    </collision>
+  </link>
+</robot>

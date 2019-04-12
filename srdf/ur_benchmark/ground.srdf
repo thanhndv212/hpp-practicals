@@ -1,3 +1,15 @@
 <?xml version="1.0"?>
 <robot name="ground">
+  <contact name="surface">
+    <link name="ground_base"/>
+    <point>
+       1.00  1.00 0.0
+      -1.00  1.00 0.0
+      -1.00 -1.00 0.0
+       1.00 -1.00 0.0
+    </point>
+    <shape>
+      4 0 1 2 3
+    </shape>
+  </contact>
 </robot>

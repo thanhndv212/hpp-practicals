@@ -32,6 +32,7 @@ SET(URDF_UR_BENCHMARK_FILES
   urdf/ur_benchmark/wall.urdf
   urdf/ur_benchmark/box.urdf
   urdf/ur_benchmark/ground.urdf
+  urdf/ur_benchmark/ground_with_obstacles.urdf
   urdf/ur_benchmark/pokeball.urdf
   )
 
