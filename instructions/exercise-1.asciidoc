@@ -17,7 +17,7 @@ hppcorbaserver
 In the second terminal, type
 [source,sh]
 ----
-gepetto-gui
+gepetto-gui -c basic
 ----
 
 In the third terminal, type
