@@ -763,15 +763,22 @@ http://www.gnu.org/software/src-highlite -->
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>gepetto-gui</tt></pre></div></div>
+<pre><tt>cd script
+python -i grasp_ball<span style="color: #990000">.</span>py</tt></pre></div></div>
 <div class="paragraph"><p>In the third terminal, type</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>cd script
-python -i grasp_ball<span style="color: #990000">.</span>py</tt></pre></div></div>
+<pre><tt>gepetto-gui</tt></pre></div></div>
+<div class="paragraph"><p>To display the robot and environment, create again a client to <code>gepetto-gui</code> in the python terminal:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> v <span style="color: #990000">=</span> vf<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">createViewer</span></span> <span style="color: #990000">()</span></tt></pre></div></div>
 <div class="imageblock">
 <div class="content">
 <img src="manipulation.png" alt="hpp-gui graphical interface" width="40%" />
@@ -785,18 +792,31 @@ the script by typing respectively</p></div>
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-weight: bold"><span style="color: #000000">v</span></span> <span style="color: #990000">(</span>q_init<span style="color: #990000">)</span>
-<span style="font-weight: bold"><span style="color: #000000">v</span></span> <span style="color: #990000">(</span>q_goal<span style="color: #990000">)</span></tt></pre></div></div>
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">v</span></span> <span style="color: #990000">(</span>q_init<span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">v</span></span> <span style="color: #990000">(</span>q_goal<span style="color: #990000">)</span></tt></pre></div></div>
 <div class="sect2">
 <h3 id="_displaying_the_constraint_graph">Displaying the constraint graph</h3>
-<div class="paragraph"><p>in the python terminal. You can display the constraint graph by typing</p></div>
+<div class="paragraph"><p>In <code>gepetto-gui</code> menu <code>Windows</code>, select item <code>Constraint Graph</code>. The following window should appear in <code>gepetto-gui</code>.</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="hpp-plot-manipulation-graph.png" alt="hpp-plot-manipulation-graph" width="40%" />
+</div>
+</div>
+<div class="paragraph"><p>Click on buttons "Refresh" and "Statistics" to display the current constraint graph.</p></div>
+<div class="paragraph"><p>By clicking on edges, you can see some statistics about the roadmap extension.</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="hpp-plot-manipulation-graph-statistics.png" alt="hpp-plot-manipulation-graph" width="40%" />
+</div>
+</div>
+<div class="paragraph"><p>Alternatively, in the python terminal. You can display the constraint graph by typing</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">display</span></span> <span style="color: #990000">(</span>format<span style="color: #990000">=</span><span style="color: #FF0000">'svg'</span><span style="color: #990000">)</span></tt></pre></div></div>
-<div class="paragraph"><p>The graph should be displayed in a brower. By moving the mouse on
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">display</span></span> <span style="color: #990000">(</span>format<span style="color: #990000">=</span><span style="color: #FF0000">'svg'</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>The graph should be displayed in a browser. By moving the mouse on
 nodes and edges, you can see the constraints associated to each graph
 element.</p></div>
 </div>
@@ -808,7 +828,7 @@ element.</p></div>
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">solve</span></span> <span style="color: #990000">()</span></tt></pre></div></div>
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">solve</span></span> <span style="color: #990000">()</span></tt></pre></div></div>
 <div class="paragraph"><p>should solve the problem in a minute or so.</p></div>
 </div>
 <div class="sect2">
@@ -819,7 +839,9 @@ http://www.gnu.org/software/src-highlite -->
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-weight: bold"><span style="color: #000000">pp</span></span> <span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">)</span></tt></pre></div></div>
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> pp <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">PathPlayer</span></span> <span style="color: #990000">(</span>v<span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">pp</span></span> <span style="color: #990000">(</span><span style="color: #993399">0</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>You can also display the path using the path player in <code>gepetto-gui</code>.</p></div>
 </div>
 </div>
 </div>
@@ -879,29 +901,6 @@ indices named <code>paths</code> corresponding to indices in the vector of paths
 <div class="sect1">
 <h2 id="_hints">Hints</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_displaying_the_constraint_graph_2">Displaying the constraint graph</h3>
-<div class="paragraph"><p>Type in a terminal</p></div>
-<div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>hpp-plot-manipulation-graph</tt></pre></div></div>
-<div class="paragraph"><p>The following window should pop up.</p></div>
-<div class="imageblock">
-<div class="content">
-<img src="hpp-plot-manipulation-graph.png" alt="hpp-plot-manipulation-graph" width="40%" />
-</div>
-</div>
-<div class="paragraph"><p>Click on buttons "Refresh" and "Statistics" to display the current constraint graph.</p></div>
-<div class="paragraph"><p>By clicking on edges, you can see some statistics about the roadmap extension.</p></div>
-<div class="imageblock">
-<div class="content">
-<img src="hpp-plot-manipulation-graph-statistics.png" alt="hpp-plot-manipulation-graph" width="40%" />
-</div>
-</div>
-</div>
 <div class="sect2">
 <h3 id="_some_useful_methods">Some useful methods</h3>
 <div class="listingblock">
@@ -980,7 +979,7 @@ graph<span style="color: #990000">.</span><span style="font-weight: bold"><span 
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2019-04-12 09:50:23 CEST
+ 2019-05-31 14:50:08 CEST
 </div>
 </div>
 </body>

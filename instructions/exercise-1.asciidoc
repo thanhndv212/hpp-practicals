@@ -27,11 +27,7 @@ cd script
 python -i rrt.py
 ----
 
-image::hpp-gui-ur5.png[width="40%",alt="hpp-gui graphical interface"]
-
-You should see the above window displaying a manipulator robot surrounded by obstacles.
-
-In the third terminal, you should see the message "Method solveBiRRT is not implemented yet". Open file +script/motion_planner.py+ in a text editor. The message is produced by method +solveBiRRT+ of class +MotionPlanner+.
+You should see the message "Method solveBiRRT is not implemented yet". Open file +script/motion_planner.py+ in a text editor. The message is produced by method +solveBiRRT+ of class +MotionPlanner+.
 
 Before starting
 ---------------
@@ -44,32 +40,48 @@ configurations. Edges contain paths. The roadmap can be extended using methods
 * +ps.addConfigToRoadmap+,
 * +ps.addEdgeToRoadmap+.
 
-Calls to method +ps.directPath+ creates a new path between two configurations. This path is stored in a vector on the server side and can be accessed by the
+Calls to method +ps.directPath+ create a new path between two configurations. This path is stored in a vector on the server side and can be accessed by the
 index in the vector.
 
 See Section "Some useful methods" below.
 
-Displaying a configuration or a path
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Displaying a configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 While running, your RRT algorithm will produce configurations and paths to store in the roadmap
-edges. To display a configuration +q+ in the viewer, use
+edges. To display a configuration +q+, first create a client to +gepetto-gui+ in the python terminal:
 [source,python]
 ----
-v (q)
+>>> v = vf.createViewer ()
 ----
 
-Functions that create a path (such as +directPath+ below) appends
+image::hpp-gui-ur5.png[width="40%",alt="hpp-gui graphical interface"]
+
+You should see the above window displaying a manipulator robot surrounded by obstacles.
+
+Then, typing in the python terminal
+[source,python]
+----
+>>> v (q)
+----
+You shoud see the robot in configuration +q+.
+
+Displaying a path
+~~~~~~~~~~~~~~~~~
+
+Functions that create a path (such as +directPath+ below) append
 the created path to a vector. The path can be displayed by the path
 player +pp+. To display the result of your algorithm, type
 
 [source,python]
 ----
-pid = ps.numberPaths () - 1
-if pid < 0: raise RuntimeError ("No path in vector")
-
-pp (pid)
+>>> pid = ps.numberPaths () - 1
+>>> if pid < 0: raise RuntimeError ("No path in vector")
+>>> pp = PathPlayer (v)
+>>> pp (pid)
 ----
+
+You can also use +gepetto-gui+ path player to display a path. For that, in menu +Tools+, select +Reset connections+ then +Refresh+. In menu +Windows+, select +Path player+.
 
 Hint
 ~~~~
@@ -79,16 +91,16 @@ methods with documentation, type in the python terminal
 
 [source,python]
 ----
-    help (robot)
-    help (ps)
+>>> help (robot)
+>>> help (ps)
 ----
 
 In +class MotionPlanner+, you can access these object by
 
 [source,python]
 ----
-    self.robot
-    self.ps
+>>>  self.robot
+>>>  self.ps
 ----
 
 Some useful methods

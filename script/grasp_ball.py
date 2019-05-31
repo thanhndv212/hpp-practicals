@@ -1,6 +1,8 @@
 from math import sqrt
 from hpp import Transform
 from hpp.corbaserver.manipulation import ConstraintGraph, Constraints
+from hpp.corbaserver import Client
+Client ().problem.resetProblem ()
 from manipulation import robot, vf, ps, Ground, Box, Pokeball, PathPlayer, gripperName, ballName
 
 vf.loadEnvironmentModel (Ground, 'ground')

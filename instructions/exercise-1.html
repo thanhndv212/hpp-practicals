@@ -772,13 +772,7 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt>cd script
 python -i rrt<span style="color: #990000">.</span>py</tt></pre></div></div>
-<div class="imageblock">
-<div class="content">
-<img src="hpp-gui-ur5.png" alt="hpp-gui graphical interface" width="40%" />
-</div>
-</div>
-<div class="paragraph"><p>You should see the above window displaying a manipulator robot surrounded by obstacles.</p></div>
-<div class="paragraph"><p>In the third terminal, you should see the message "Method solveBiRRT is not implemented yet". Open file <code>script/motion_planner.py</code> in a text editor. The message is produced by method <code>solveBiRRT</code> of class <code>MotionPlanner</code>.</p></div>
+<div class="paragraph"><p>You should see the message "Method solveBiRRT is not implemented yet". Open file <code>script/motion_planner.py</code> in a text editor. The message is produced by method <code>solveBiRRT</code> of class <code>MotionPlanner</code>.</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -800,20 +794,37 @@ configurations. Edges contain paths. The roadmap can be extended using methods</
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Calls to method <code>ps.directPath</code> creates a new path between two configurations. This path is stored in a vector on the server side and can be accessed by the
+<div class="paragraph"><p>Calls to method <code>ps.directPath</code> create a new path between two configurations. This path is stored in a vector on the server side and can be accessed by the
 index in the vector.</p></div>
 <div class="paragraph"><p>See Section "Some useful methods" below.</p></div>
 <div class="sect2">
-<h3 id="_displaying_a_configuration_or_a_path">Displaying a configuration or a path</h3>
+<h3 id="_displaying_a_configuration">Displaying a configuration</h3>
 <div class="paragraph"><p>While running, your RRT algorithm will produce configurations and paths to store in the roadmap
-edges. To display a configuration <code>q</code> in the viewer, use</p></div>
+edges. To display a configuration <code>q</code>, first create a client to <code>gepetto-gui</code> in the python terminal:</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-weight: bold"><span style="color: #000000">v</span></span> <span style="color: #990000">(</span>q<span style="color: #990000">)</span></tt></pre></div></div>
-<div class="paragraph"><p>Functions that create a path (such as <code>directPath</code> below) appends
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> v <span style="color: #990000">=</span> vf<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">createViewer</span></span> <span style="color: #990000">()</span></tt></pre></div></div>
+<div class="imageblock">
+<div class="content">
+<img src="hpp-gui-ur5.png" alt="hpp-gui graphical interface" width="40%" />
+</div>
+</div>
+<div class="paragraph"><p>You should see the above window displaying a manipulator robot surrounded by obstacles.</p></div>
+<div class="paragraph"><p>Then, typing in the python terminal</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">v</span></span> <span style="color: #990000">(</span>q<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>You shoud see the robot in configuration <code>q</code>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_displaying_a_path">Displaying a path</h3>
+<div class="paragraph"><p>Functions that create a path (such as <code>directPath</code> below) append
 the created path to a vector. The path can be displayed by the path
 player <code>pp</code>. To display the result of your algorithm, type</p></div>
 <div class="listingblock">
@@ -821,10 +832,11 @@ player <code>pp</code>. To display the result of your algorithm, type</p></div>
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>pid <span style="color: #990000">=</span> ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">numberPaths</span></span> <span style="color: #990000">()</span> <span style="color: #990000">-</span> <span style="color: #993399">1</span>
-<span style="font-weight: bold"><span style="color: #0000FF">if</span></span> pid <span style="color: #990000">&lt;</span> <span style="color: #993399">0</span><span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">raise</span></span> <span style="font-weight: bold"><span style="color: #000000">RuntimeError</span></span> <span style="color: #990000">(</span><span style="color: #FF0000">"No path in vector"</span><span style="color: #990000">)</span>
-
-<span style="font-weight: bold"><span style="color: #000000">pp</span></span> <span style="color: #990000">(</span>pid<span style="color: #990000">)</span></tt></pre></div></div>
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> pid <span style="color: #990000">=</span> ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">numberPaths</span></span> <span style="color: #990000">()</span> <span style="color: #990000">-</span> <span style="color: #993399">1</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> pid <span style="color: #990000">&lt;</span> <span style="color: #993399">0</span><span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">raise</span></span> <span style="font-weight: bold"><span style="color: #000000">RuntimeError</span></span> <span style="color: #990000">(</span><span style="color: #FF0000">"No path in vector"</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> pp <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">PathPlayer</span></span> <span style="color: #990000">(</span>v<span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">pp</span></span> <span style="color: #990000">(</span>pid<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>You can also use <code>gepetto-gui</code> path player to display a path. For that, in menu <code>Tools</code>, select <code>Reset connections</code> then <code>Refresh</code>. In menu <code>Windows</code>, select <code>Path player</code>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_hint">Hint</h3>
@@ -835,16 +847,16 @@ methods with documentation, type in the python terminal</p></div>
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>    <span style="font-weight: bold"><span style="color: #000000">help</span></span> <span style="color: #990000">(</span>robot<span style="color: #990000">)</span>
-    <span style="font-weight: bold"><span style="color: #000000">help</span></span> <span style="color: #990000">(</span>ps<span style="color: #990000">)</span></tt></pre></div></div>
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">help</span></span> <span style="color: #990000">(</span>robot<span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">help</span></span> <span style="color: #990000">(</span>ps<span style="color: #990000">)</span></tt></pre></div></div>
 <div class="paragraph"><p>In <code>class MotionPlanner</code>, you can access these object by</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>    self<span style="color: #990000">.</span>robot
-    self<span style="color: #990000">.</span>ps</tt></pre></div></div>
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span>  self<span style="color: #990000">.</span>robot
+<span style="color: #990000">&gt;&gt;&gt;</span>  self<span style="color: #990000">.</span>ps</tt></pre></div></div>
 </div>
 <div class="sect2">
 <h3 id="_some_useful_methods">Some useful methods</h3>
@@ -952,7 +964,7 @@ http://www.gnu.org/software/src-highlite -->
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2019-05-31 11:32:41 CEST
+ 2019-05-31 14:35:55 CEST
 </div>
 </div>
 </body>

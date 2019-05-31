@@ -18,14 +18,20 @@ hppcorbaserver
 In the second terminal, type
 [source,sh]
 ----
-gepetto-gui
+cd script
+python -i grasp_ball.py
 ----
 
 In the third terminal, type
 [source,sh]
 ----
-cd script
-python -i grasp_ball.py
+gepetto-gui
+----
+
+To display the robot and environment, create again a client to +gepetto-gui+ in the python terminal:
+[source,python]
+----
+>>> v = vf.createViewer ()
 ----
 
 image::manipulation.png[width="40%",alt="hpp-gui graphical interface"]
@@ -36,21 +42,31 @@ the script by typing respectively
 
 [source,python]
 ----
-v (q_init)
-v (q_goal)
+>>> v (q_init)
+>>> v (q_goal)
 ----
 
 Displaying the constraint graph
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-in the python terminal. You can display the constraint graph by typing
+In +gepetto-gui+ menu +Windows+, select item +Constraint Graph+. The following window should appear in +gepetto-gui+.
+
+image::hpp-plot-manipulation-graph.png[width="40%",alt="hpp-plot-manipulation-graph"]
+
+Click on buttons "Refresh" and "Statistics" to display the current constraint graph.
+
+By clicking on edges, you can see some statistics about the roadmap extension.
+
+image::hpp-plot-manipulation-graph-statistics.png[width="40%",alt="hpp-plot-manipulation-graph"]
+
+Alternatively, in the python terminal. You can display the constraint graph by typing
 
 [source,python]
 ----
-graph.display (format='svg')
+>>> graph.display (format='svg')
 ----
 
-The graph should be displayed in a brower. By moving the mouse on
+The graph should be displayed in a browser. By moving the mouse on
 nodes and edges, you can see the constraints associated to each graph
 element.
 
@@ -60,7 +76,7 @@ Solving the problem
 Typing
 [source,python]
 ----
-ps.solve ()
+>>> ps.solve ()
 ----
 should solve the problem in a minute or so.
 
@@ -69,8 +85,10 @@ Displaying the path
 As in exercise 1, the path can be displayed using the path player
 [source,python]
 ----
-pp (0)
+>>> pp = PathPlayer (v)
+>>> pp (0)
 ----
+You can also display the path using the path player in +gepetto-gui+.
 
 A more difficult problem
 ------------------------
@@ -110,25 +128,6 @@ indices named +paths+ corresponding to indices in the vector of paths. Each path
 
 Hints
 -----
-
-Displaying the constraint graph
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Type in a terminal
-
-[source,sh]
-----
-hpp-plot-manipulation-graph
-----
-The following window should pop up.
-
-image::hpp-plot-manipulation-graph.png[width="40%",alt="hpp-plot-manipulation-graph"]
-
-Click on buttons "Refresh" and "Statistics" to display the current constraint graph.
-
-By clicking on edges, you can see some statistics about the roadmap extension.
-
-image::hpp-plot-manipulation-graph-statistics.png[width="40%",alt="hpp-plot-manipulation-graph"]
 
 Some useful methods
 ~~~~~~~~~~~~~~~~~~~
