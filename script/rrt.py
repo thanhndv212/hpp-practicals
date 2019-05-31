@@ -11,13 +11,8 @@ vf.loadObstacleModel ("hpp_practicals","ur_benchmark/obstacles","obstacles")
 vf.loadObstacleModel ("hpp_practicals","ur_benchmark/table","table")
 vf.loadObstacleModel ("hpp_practicals","ur_benchmark/wall","wall")
 
-v = vf.createViewer ()
-
 q1 = [0, -1.57, 1.57, 0, 0, 0]; q2 = [0.2, -1.57, -1.8, 0, 0.8, 0]
 q3 = [1.57, -1.57, -1.8, 0, 0.8, 0]
-
-v (q2)
-v (q3)
 
 ps.setInitialConfig (q2)
 ps.addGoalConfig (q3)
@@ -26,5 +21,8 @@ from motion_planner import MotionPlanner
 m = MotionPlanner (robot, ps)
 pathId = m.solveBiRRT (maxIter = 1000)
 
-pp = PathPlayer (v)
-#pp (pathId)
+# v = vf.createViewer ()
+# v (q2)
+# v (q3)
+# pp = PathPlayer (v)
+# pp (pathId)
