@@ -47,17 +47,17 @@ ps.setConstantRightHandSide ('placement', True)
 ps.setConstantRightHandSide ('placement/complement', False)
 
 ## Set constraints of nodes and edges
-graph.setConstraints (node='placement', constraints = \
+graph.addConstraints (node='placement', constraints = \
                       Constraints (numConstraints = ['placement'],))
-graph.setConstraints (node='grasp',
+graph.addConstraints (node='grasp',
                       constraints = Constraints (numConstraints = ['grasp']))
-graph.setConstraints (edge='transit', constraints = \
+graph.addConstraints (edge='transit', constraints = \
                       Constraints (numConstraints = ['placement/complement']))
-graph.setConstraints (edge='grasp-ball', constraints = \
+graph.addConstraints (edge='grasp-ball', constraints = \
                       Constraints (numConstraints = ['placement/complement']))
 # These edges are in node 'grasp'
-graph.setConstraints (edge='transfer',     constraints = Constraints ())
-graph.setConstraints (edge='release-ball', constraints = Constraints ())
+graph.addConstraints (edge='transfer',     constraints = Constraints ())
+graph.addConstraints (edge='release-ball', constraints = Constraints ())
 ps.selectPathValidation ("Dichotomy", 0)
 ps.selectPathProjector ("Progressive", 0.1)
 graph.initialize ()
