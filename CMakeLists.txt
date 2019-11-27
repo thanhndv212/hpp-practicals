@@ -14,15 +14,16 @@
 # this file.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-INCLUDE(cmake/base.cmake)
-INCLUDE(cmake/python.cmake)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(PROJECT_NAME hpp_practicals)
 SET(PROJECT_DESCRIPTION "Practicals for Humanoid Path Planner software.")
-SET(PROJECT_URL "")
 
-SETUP_PROJECT()
+INCLUDE(cmake/hpp.cmake)
+INCLUDE(cmake/python.cmake)
+
+COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
+PROJECT(${PROJECT_NAME} ${PROJECT_ARGS})
 
 FINDPYTHON()
 
@@ -95,5 +96,3 @@ INSTALL(FILES
   ${PROJECT_SOURCE_DIR}/src/hpp/corbaserver/practicals/manipulation/ur5/__init__.py
   DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/practicals/manipulation/ur5
 )
-
-SETUP_PROJECT_FINALIZE()
