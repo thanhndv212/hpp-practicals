@@ -8,9 +8,12 @@ ps = ProblemSolver (robot)
 
 vf = ViewerFactory (ps)
 
-vf.loadObstacleModel ("hpp_practicals","ur_benchmark/obstacles","obstacles")
-vf.loadObstacleModel ("hpp_practicals","ur_benchmark/table","table")
-vf.loadObstacleModel ("hpp_practicals","ur_benchmark/wall","wall")
+vf.loadObstacleModel ("package://hpp_practicals/urdf/ur_benchmark/obstacles.urdf",
+                      "obstacles")
+vf.loadObstacleModel ("package://hpp_practicals/urdf/ur_benchmark/table.urdf",
+                      "table")
+vf.loadObstacleModel ("package://hpp_practicals/urdf/ur_benchmark/wall.urdf",
+                      "wall")
 
 q1 = [0, -1.57, 1.57, 0, 0, 0]; q2 = [0.2, -1.57, -1.8, 0, 0.8, 0]
 q3 = [1.57, -1.57, -1.8, 0, 0.8, 0]
