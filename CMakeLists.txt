@@ -1,5 +1,5 @@
-# Copyright (c) 2017 CNRS
-# Author: Florent Lamiraux
+# Copyright (c) 2017, 2020 CNRS
+# Author: Florent Lamiraux, Guilhem Saurel
 #
 # this file is free software: you can redistribute it
 # and/or modify it under the terms of the GNU Lesser General Public
@@ -14,10 +14,12 @@
 # this file.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 SET(PROJECT_NAME hpp_practicals)
 SET(PROJECT_DESCRIPTION "Practicals for Humanoid Path Planner software.")
+
+SET(PROJECT_USE_CMAKE_EXPORT TRUE)
 
 INCLUDE(cmake/hpp.cmake)
 INCLUDE(cmake/python.cmake)
@@ -96,3 +98,6 @@ INSTALL(FILES
   ${PROJECT_SOURCE_DIR}/src/hpp/corbaserver/practicals/manipulation/ur5/__init__.py
   DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/practicals/manipulation/ur5
 )
+
+ADD_LIBRARY(${PROJECT_NAME} INTERFACE)
+INSTALL(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
