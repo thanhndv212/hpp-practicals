@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
 <title>Manipulation planning</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -727,17 +728,13 @@ install: function(toclevels) {
 }
 
 }
-asciidoc.install(2);
+asciidoc.install();
 /*]]>*/
 </script>
 </head>
 <body class="article">
 <div id="header">
 <h1>Manipulation planning</h1>
-<div id="toc">
-  <div id="toctitle">Table of Contents</div>
-  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
-</div>
 </div>
 <div id="content">
 <div class="sect1">
@@ -752,14 +749,14 @@ asciidoc.install(2);
 <div class="paragraph"><p>Open a terminal, cd into hpp-practicals directory and open 3 tab by typing CTRL+SHIFT+T
 twice. In the first terminal, type</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt>hppcorbaserver</tt></pre></div></div>
 <div class="paragraph"><p>In the second terminal, type</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -767,14 +764,14 @@ http://www.gnu.org/software/src-highlite -->
 python -i grasp_ball<span style="color: #990000">.</span>py</tt></pre></div></div>
 <div class="paragraph"><p>In the third terminal, type</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt>gepetto-gui</tt></pre></div></div>
 <div class="paragraph"><p>To display the robot and environment, create again a client to <code>gepetto-gui</code> in the python terminal:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -788,7 +785,7 @@ http://www.gnu.org/software/src-highlite -->
 You can display the initial and goal configurations of the problem defined in
 the script by typing respectively</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -811,7 +808,7 @@ http://www.gnu.org/software/src-highlite -->
 </div>
 <div class="paragraph"><p>Alternatively, in the python terminal. You can display the constraint graph by typing</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -824,7 +821,7 @@ element.</p></div>
 <h3 id="_solving_the_problem">Solving the problem</h3>
 <div class="paragraph"><p>Typing</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -835,7 +832,7 @@ http://www.gnu.org/software/src-highlite -->
 <h3 id="_displaying_the_path">Displaying the path</h3>
 <div class="paragraph"><p>As in exercise 1, the path can be displayed using the path player</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -860,8 +857,9 @@ initial configuration of the box.</p></div>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_exercise_2_1">Exercise 2.1</h3>
-<div class="paragraph"><p>In order to help the manipulation planner, define a constraint graph with
-intermediate states like for instance:</p></div>
+<div class="paragraph"><p>In order to help the manipulation planner, define in file
+<code>grasp_ball_in_box.py</code> a constraint graph with intermediate states like for
+instance:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -883,7 +881,7 @@ a state where the gripper holds the ball above the ground.
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="./images/icons/warning.png" alt="Warning" />
+<div class="title">Warning</div>
 </td>
 <td class="content">In method <code>graph.createNode</code> the order of the nodes in the list given as input is important: when checking in which node a configuration lies, node constraints will be checked in the order of node creation.</td>
 </tr></table>
@@ -904,7 +902,7 @@ indices named <code>paths</code> corresponding to indices in the vector of paths
 <div class="sect2">
 <h3 id="_some_useful_methods">Some useful methods</h3>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+<div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -979,7 +977,7 @@ graph<span style="color: #990000">.</span><span style="font-weight: bold"><span 
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2019-05-31 14:50:08 CEST
+ 2020-11-09 12:13:47 CET
 </div>
 </div>
 </body>

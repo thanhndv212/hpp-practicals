@@ -366,6 +366,10 @@ Motion constraints
   \begin {align*}
     \forall t\in [0,1], f(\bar{\steer} (t)) &= 0
   \end {align*}
+  \pause
+  It can be defined by projection
+  $$\bar{\steer} = proj\circ \steer
+  $$
 \end {frame}
 
 \begin {frame} {Projecting path on constraint}
@@ -521,12 +525,12 @@ Motion constraints
         \item <2-> for each connected component:
           \setlength\leftmargin{0em}
           \begin{itemize}[leftmargin=*]
-          \item[]<2-> $\conf_{near}$ = nearest\_neighbour($\conf_{rand}$, $roadmap$)
-          \item[]<3-> $e$ = select\_transition($\conf_{near}$)
-          \item[]<4-> $\conf_{proj}$ = generate\_target\_config($\conf_{near},\conf_{rand}$, $e$)
-          \item[]<5-> $\conf_{new}$ = extend($\conf_{near}$, $\conf_{proj}$, edge)
+          \item[]<2-> $\conf_{near}$ = nearest\_neighbor($\conf_{rand}$, $roadmap$)
+          \item[]<3-> $T$ = select\_transition($\conf_{near}$)
+          \item[]<4-> $\conf_{proj}$ = generate\_target\_config($\conf_{near},\conf_{rand}$, $T$)
+          \item[]<5-> $\conf_{new}$ = extend($\conf_{near}$, $\conf_{proj}$, $T$)
           \item[]<6-> $roadmap$.insert\_node($\conf_{new}$)
-          \item[]<7-> $roadmap$.insert\_edge(e, $\conf_{near}$, $\conf_{new}$)
+          \item[]<7-> $roadmap$.insert\_edge($T$, $\conf_{near}$, $\conf_{new}$)
           \item[]<7-> new\_nodes.append ($\conf_{new}$)
           \end{itemize}
         \item <8-> for $\conf\in (\conf_{new}^1, ..., \conf_{new}^{n_{cc}})$:
@@ -544,10 +548,10 @@ Motion constraints
 
 \begin {frame} {Select transition}
 
-  $e$ = select\_transition($\conf_{near}$)
+  $T$ = select\_transition($\conf_{near}$)
   \vskip .5cm
 
-  Outward edges of each node are given a probability distribution. The transition from a node to another node is chosen by random sampling.
+  Outward transitions of each state are given a probability distribution. The transition from a state to another state is chosen by random sampling.
   \begin{center}
       \begin{tikzpicture}[>=stealth',auto,node distance=3.5cm,
         thick,main node/.style={circle,draw,text width=1.5cm,align=center,font=\footnotesize}]
@@ -567,12 +571,12 @@ Motion constraints
 
 \begin {frame} {Generate target configuration}
 
-$\conf_{proj}$ = generate\_target\_config($\conf_{near},\conf_{rand}$, $e$)
+$\conf_{proj}$ = generate\_target\_config($\conf_{near},\conf_{rand}$, $T$)
 \vskip .5cm
-Once edge $e$ has been selected, $\conf_{rand}$ is \textit {projected} onto the destination node $n_{dest}$ in a configuration reachable by $\conf_{near}$.
+Once transition $T$ has been selected, $\conf_{rand}$ is \textit {projected} onto the destination state $S_{dest}$ in a configuration reachable by $\conf_{near}$.
 \begin{align*}
-  f_{e} (\conf_{proj}) &= f_{e} (\conf_{near})\\
-  f_{dest} (\conf_{proj}) &= 0
+  f_{T} (\conf_{proj}) &= f_{T} (\conf_{near})\\
+  f_{S_{dest}} (\conf_{proj}) &= 0
 \end{align*}
 \end {frame}
 
@@ -582,9 +586,9 @@ Once edge $e$ has been selected, $\conf_{rand}$ is \textit {projected} onto the 
 
 \begin {frame} {Extend}
 
-$\conf_{new}$ = extend($\conf_{near}$, $\conf_{proj}$, edge)
+$\conf_{new}$ = extend($\conf_{near}$, $\conf_{proj}$, $T$)
 \vskip.5cm
-\textit {Project} straight path $[\conf_{near},\conf_{proj}]$ on edge constraint:
+\textit {Project} straight path $[\conf_{near},\conf_{proj}]$ on transition constraint:
 \begin {itemize}
 \item if projection successful and projected path collision free
 $$
@@ -595,7 +599,7 @@ $$
 \end {itemize}
 \pause
 $$
-\forall \conf\in(\conf_{near},\conf_{new}),\ f_{e} (\conf) = f_{e}(\conf_{near})
+\forall \conf\in(\conf_{near},\conf_{new}),\ f_{T} (\conf) = f_{T}(\conf_{near})
 $$
 \end {frame}
 
@@ -626,14 +630,14 @@ $$
 \begin {frame} {Connect}
 connect ($\conf_0$, $\conf_1$):
 \begin{itemize}
-  \item [] $s_0$ = state ($\conf_0$)
-  \item [] $s_1$ = state ($\conf_1$)
-  \item [] e = transition ($n_0$, $n_1$)
-  \item [] if e and $f_{e} (\conf_0) == f_{e} (\conf_1)$:
+  \item [] $S_0$ = state ($\conf_0$)
+  \item [] $S_1$ = state ($\conf_1$)
+  \item [] $T$ = transition ($S_0$, $S_1$)
+  \item [] if $T$ and $f_{T} (\conf_0) == f_{T} (\conf_1)$:
     \begin {itemize}
-    \item [] if p = projected\_path (e, $\conf_0$, $\conf_1$) collision-free:
+    \item [] if p = projected\_path ($T$, $\conf_0$, $\conf_1$) collision-free:
       \begin {itemize}
-        \item [] roadmap.insert\_edge (e, $\conf_0$,$\conf_1$)
+        \item [] roadmap.insert\_edge ($T$, $\conf_0$,$\conf_1$)
       \end {itemize}
     \end {itemize}
   \item [] return
@@ -723,17 +727,17 @@ Manipulation RRT is initialized with $\conf_{init}$, $\conf_{goal}$.
 
   \begin {columns}
     \column {.6\linewidth}
-    $\conf_{proj}$ = generate\_target\_config($\conf_{near},\conf_{rand}$, $e$)
+    $\conf_{proj}$ = generate\_target\_config($\conf_{near},\conf_{rand}$, $T$)
     \vskip .5cm
     $\conf_1\leftarrow$ pick configuration
     \begin {itemize}
-    \item in node $N_1$,
+    \item in state $S_1$,
     \item not in same connected component as $\conf_{near}$
     \end {itemize}
     \begin{align*}
-      f_{e_1} (\conf_{proj}) &= f_{e_1} (\conf_{near})\\
-      {\color{red} f_{e_2} (\conf_{proj})} &{\color{red}= f_{e_2} (\conf_1)}\\
-      f_{N_2} (\conf_{proj}) &= 0
+      f_{T_1} (\conf_{proj}) &= f_{T_1} (\conf_{near})\\
+      {\color{red} f_{T_2} (\conf_{proj})} &{\color{red}= f_{T_2} (\conf_1)}\\
+      f_{S_2} (\conf_{proj}) &= 0
     \end{align*}
     \column {.4\linewidth}
     \begin{center}
@@ -741,12 +745,12 @@ Manipulation RRT is initialized with $\conf_{init}$, $\conf_{goal}$.
       \begin{tikzpicture}[>=stealth',auto,node distance=3.25cm,
           thick,main node/.style={circle,draw,text width=1.25cm,align=center,
             font=\tiny}]
-        {\node[main node] (nh) {$N_1$};}
-        {\node[main node] (h) [right of=nh] {$N_2$};}
+        {\node[main node] (nh) {$S_1$};}
+        {\node[main node] (h) [right of=nh] {$S_2$};}
         {\path[<-] (h) edge[bend right=0] node[above] {Crossed foliation}
           (nh);}
-        {\path[<-] (h) edge[bend right=22.5] node[above] {$e_1$} (nh);}
-        {\path[->] (h) edge[bend left=22.5] node[below] {$e_2$} (nh);}
+        {\path[<-] (h) edge[bend right=22.5] node[above] {$T_1$} (nh);}
+        {\path[->] (h) edge[bend left=22.5] node[below] {$T_2$} (nh);}
       \end{tikzpicture}
     \end{center}
   \end {columns}
@@ -758,9 +762,9 @@ Manipulation RRT is initialized with $\conf_{init}$, $\conf_{goal}$.
 
 \begin {frame} {Crossed foliation transition: extend}
 
-  $\conf_{new}$ = extend($\conf_{near}$, $\conf_{proj}$, $e_1$)
+  $\conf_{new}$ = extend($\conf_{near}$, $\conf_{proj}$, $T_1$)
   \vskip.5cm
-  \textit {Project} straight path $[\conf_{near},\conf_{proj}]$ on $e_1$ constraint:
+  \textit {Project} straight path $[\conf_{near},\conf_{proj}]$ on $T_1$ constraint:
   \begin {itemize}
   \item if projection successful and projected path collision free
     $$
@@ -768,10 +772,10 @@ Manipulation RRT is initialized with $\conf_{init}$, $\conf_{goal}$.
     $$
     \pause
     \begin{align*}
-      f_{e_2} (\conf_{2}) &= f_{e_2} (\conf_1)\\
-      f_{N_2} (\conf_{2}) &= 0
+      f_{T_2} (\conf_{2}) &= f_{T_2} (\conf_1)\\
+      f_{S_2} (\conf_{2}) &= 0
     \end{align*}
-    \item $\conf_2$ is connectable to $\conf_1$ via $e_2$.
+    \item $\conf_2$ is connectable to $\conf_1$ via $T_2$.
     \end{itemize}
 \end {frame}
 
@@ -781,18 +785,30 @@ Manipulation RRT is initialized with $\conf_{init}$, $\conf_{goal}$.
 
 \begin {frame} {Relative positions as numerical constraints}
 
-Let $T_1 = T_{(R_1,t_1)}$ and $T_2 = T_{(R_2,t_2)}$ be two rigid-body transformations. The relative transformation $T_{2/1} = T_1^{-1}\circ T_2$ can be represented by a vector of dimension 6:
-$$
-\left(\begin{array}{c} \mathbf{u} \\ \mathbf {v}\end{array}\right)
-$$
-where
-\begin {columns}
-\column {.5\textwidth}
-$$
-\mathbf{u} = R_1^T (t_2-t_1)
-$$
-\column {.5\textwidth}
-$R_1^T R_2$ is the matrix of the rotation around axis $\mathbf{v}/\|\mathbf {v}\|$ and of angles $\|\mathbf {v}\|$.
-\end {columns}
+  \centerline{
+    \parbox{.5\linewidth}{
+      \begin{itemize}
+      \item $T_1 = T_{(R_1,t_1)}\in SE(3)$, $T_2 = T_{(R_2,t_2)}\in SE(3)$.
+      \item $T_{2/1} = T_1^{-1}\circ T_2$ can be represented by a vector of dimension 6:
+      $$
+      \left(\begin{array}{c} \mathbf{u} \\ \mathbf {v}\end{array}\right)
+      $$
+      where
+      $$
+      \mathbf{u} = R_1^T (t_2-t_1)
+      $$
+      $R_1^T R_2$  matrix of the rotation around axis $\mathbf{v}/\|\mathbf {v}\|$ and of angles $\|\mathbf {v}\|$.
+      \end{itemize}
+    }
+    \parbox{.5\linewidth}{
+      \centerline {
+        \def\svgwidth {\linewidth}
+                      {\tiny
+                        \graphicspath{{./figures/}}
+                        \input {figures/relative-pose.pdf_tex}
+                      }
+      }
+    }
+  }
 \end {frame}
 
