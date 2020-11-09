@@ -781,18 +781,30 @@ Manipulation RRT is initialized with $\conf_{init}$, $\conf_{goal}$.
 
 \begin {frame} {Relative positions as numerical constraints}
 
-Let $T_1 = T_{(R_1,t_1)}$ and $T_2 = T_{(R_2,t_2)}$ be two rigid-body transformations. The relative transformation $T_{2/1} = T_1^{-1}\circ T_2$ can be represented by a vector of dimension 6:
-$$
-\left(\begin{array}{c} \mathbf{u} \\ \mathbf {v}\end{array}\right)
-$$
-where
-\begin {columns}
-\column {.5\textwidth}
-$$
-\mathbf{u} = R_1^T (t_2-t_1)
-$$
-\column {.5\textwidth}
-$R_1^T R_2$ is the matrix of the rotation around axis $\mathbf{v}/\|\mathbf {v}\|$ and of angles $\|\mathbf {v}\|$.
-\end {columns}
+  \centerline{
+    \parbox{.5\linewidth}{
+      \begin{itemize}
+      \item $T_1 = T_{(R_1,t_1)}\in SE(3)$, $T_2 = T_{(R_2,t_2)}\in SE(3)$.
+      \item $T_{2/1} = T_1^{-1}\circ T_2$ can be represented by a vector of dimension 6:
+      $$
+      \left(\begin{array}{c} \mathbf{u} \\ \mathbf {v}\end{array}\right)
+      $$
+      where
+      $$
+      \mathbf{u} = R_1^T (t_2-t_1)
+      $$
+      $R_1^T R_2$  matrix of the rotation around axis $\mathbf{v}/\|\mathbf {v}\|$ and of angles $\|\mathbf {v}\|$.
+      \end{itemize}
+    }
+    \parbox{.5\linewidth}{
+      \centerline {
+        \def\svgwidth {\linewidth}
+                      {\tiny
+                        \graphicspath{{./figures/}}
+                        \input {figures/relative-pose.pdf_tex}
+                      }
+      }
+    }
+  }
 \end {frame}
 
