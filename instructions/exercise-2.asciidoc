@@ -105,8 +105,9 @@ Exercise 2
 Exercise 2.1
 ~~~~~~~~~~~~
 
-In order to help the manipulation planner, define a constraint graph with
-intermediate states like for instance:
+In order to help the manipulation planner, define in file
++grasp_ball_in_box.py+ a constraint graph with intermediate states like for
+instance:
 
 - a state where the gripper is empty above the ball
 - a state where the gripper holds the ball above the ground.
