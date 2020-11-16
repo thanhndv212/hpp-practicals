@@ -1,5 +1,7 @@
-from grasp_ball import q_init, q_goal, robot, ps, graph, r, pp
+from grasp_ball import q_init, q_goal, robot, ps, graph, vf
 
+# Warning, this script is provided only as an example. The loop below never
+# ends since all direct paths between q_init and q1 are in collision.
 success = False
 trial = 0
 while not success:
