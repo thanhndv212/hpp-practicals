@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.48.4, www.inkscape.org
+%% Creator: Inkscape inkscape 0.92.5, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'composite-robot.pdf' (pdf, eps, ps)
 %%
@@ -35,8 +35,10 @@
     \renewcommand\transparent[1]{}%
   }%
   \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{1034.18609236bp}%
+    \setlength{\unitlength}{968.86391471bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,23 +50,27 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.44229377)%
-    \put(0,0){\includegraphics[width=\unitlength]{composite-robot.pdf}}%
-    \put(0.18511317,0.33405776){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{T3}}}%
-    \put(0.19063856,0.25974121){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R3}}}%
-    \put(0.03795018,0.15727769){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
-    \put(0.16624544,0.16806823){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
-    \put(0.23763354,0.16723941){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
-    \put(0.03413327,0.08004115){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
-    \put(0.16718476,0.08656866){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
-    \put(0.23956743,0.08684493){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R1}}}%
-    \put(0.02779318,0.26663875){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\body_0$}}}%
-    \put(-0.00139633,0.20617869){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\body_1$}}}%
-    \put(-0.00256844,0.13038201){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\body_2$}}}%
-    \put(0.44109546,0.33414907){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{T3}}}%
-    \put(0.44662087,0.25983252){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{R3}}}%
-    \put(0.00843803,0.42539254){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf {robot}}}}%
-    \put(0.43991374,0.43174339){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textbf {object}}}}%
-    \put(-0.00150768,0.00656766){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\conf = \left(q_0,\cdots,q_{n_r},q_{n_r+1},\cdots,q_{n_r+n_o}\right)$}}}%
+  \begin{picture}(1,0.44259914)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{composite-robot.pdf}}%
+    \put(0.18524415,0.33429413){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}SE(3)\end{tabular}}}}%
+    \put(0.03797704,0.23015461){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}R1\end{tabular}}}}%
+    \put(0.16636307,0.24095279){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}R1\end{tabular}}}}%
+    \put(0.23780169,0.24012338){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}R1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{composite-robot.pdf}}%
+    \put(0.03415742,0.15286343){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}R1\end{tabular}}}}%
+    \put(0.16730306,0.15939555){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}R1\end{tabular}}}}%
+    \put(0.23973694,0.15967202){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}R1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{composite-robot.pdf}}%
+    \put(0.02781284,0.33959305){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}$\body_0$\end{tabular}}}}%
+    \put(-0.00139732,0.27909021){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}$\body_1$\end{tabular}}}}%
+    \put(-0.00257026,0.2032399){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}$\body_2$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{composite-robot.pdf}}%
+    \put(0.44140757,0.33438551){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}SE(3)\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{composite-robot.pdf}}%
+    \put(0.008444,0.42569354){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf {robot}\end{tabular}}}}%
+    \put(0.44022501,0.43204889){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}\textbf {object}\end{tabular}}}}%
+    \put(-0.00150875,0.00657231){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}$\conf = \left(q_0,\cdots,q_{n_r},q_{n_r+1},\cdots,q_{n_r+n_o}\right)$\end{tabular}}}}%
   \end{picture}%
 \endgroup%
