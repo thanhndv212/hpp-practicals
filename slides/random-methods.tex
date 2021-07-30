@@ -1,6 +1,28 @@
 %\section {Random methods}
 
 %
+% History
+%
+
+\begin{frame}{History}
+  \begin{itemize}
+  \item Before the 1990's: mainly a mathematical problem
+    \begin{itemize}
+    \item real algebraic geometry,
+    \item decidability: Schwartz and Sharir 1982,
+      \begin{itemize}
+      \item Tarski theorem, Collins decomposition,
+      \end{itemize}
+    \end{itemize}
+    \pause
+  \item from the 1990's: an algorithmic problem
+    \begin{itemize}
+    \item random sampling (1993),
+    \item asymptotically optimal random sampling (2011).
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+%
 %  random methods
 %
 
@@ -392,4 +414,116 @@
       \end{itemize}
     \end{itemize}
   \end{itemize}
+\end{frame}
+
+%
+% asymptotically optimal random sampling
+%
+
+\begin{frame} {Asymptotically optimal random methods}
+  Asymptotically optimal variants of PRM and RRT exist:
+  \begin{itemize}
+  \item when the number of nodes tends to infinity,
+  \item the solution computed by the algorithm tends to the optimal
+    collision-free path.
+  \end{itemize}
+\end{frame}
+
+%
+%  PRM*
+%
+
+\begin{frame} {PRM*}
+  \parbox{.49\linewidth} {
+    \begin{algorithmic}
+      \STATE \textbf{PRM}
+      \STATE{$V\gets\emptyset$, $E\gets\emptyset$}
+      \FOR{$i\in\{1,\cdots,n\}$}
+      \STATE{$\conf_{rand}\gets$ {SampleFree}$_i$}
+      \STATE{$U\gets G.near(\conf_{rand},r)$}
+      \FORALL{$\conf\in U$ in order of increasing $\|\conf-\conf_{rand}\|$}
+      \IF{$\conf_{rand}$ and $\conf$ in different connected components}
+      \STATE{TryConnect($\conf_{rand},\conf$)}
+      \ENDIF
+      \ENDFOR
+      \ENDFOR
+    \end{algorithmic}
+  }
+  \pause
+  \parbox{.49\linewidth} {
+    \begin{algorithmic}
+      \STATE \textbf{PRM*}
+      \STATE{$V\gets$ {SampleFree}$_{i=1,\cdots,n}$, $E\gets\emptyset$}
+      \FORALL{$\conf\in V$}
+      \STATE{$U\gets G.near(\conf,{\color{red}r^{*}})\setminus\conf$}
+      \FORALL{$\conf'\in U$}
+      \STATE{TryConnect($\conf,\conf'$)}
+      \ENDFOR
+      \ENDFOR
+    \end{algorithmic}
+    {\color{red}$r^{*}$}=$\gamma_{PRM}(\log(n)/n)^{\frac{1}{d}}$
+  }
+\end{frame}
+
+%
+%  kPRM*
+%
+
+\begin{frame} {kPRM*}
+  \parbox{.49\linewidth} {
+    \begin{algorithmic}
+      \STATE \textbf{kPRM}
+      \STATE{$V\gets\emptyset$, $E\gets\emptyset$}
+      \FOR{$i\in\{1,\cdots,n\}$}
+      \STATE{$\conf_{rand}\gets$ {SampleFree}$_i$}
+      \STATE{$U\gets G.nearest(\conf_{rand},k)$}
+      \FORALL{$\conf\in U$ in order of increasing $\|\conf-\conf_{rand}\|$}
+      \IF{$\conf_{rand}$ and $\conf$ in different connected components}
+      \STATE{TryConnect($\conf_{rand},\conf$)}
+      \ENDIF
+      \ENDFOR
+      \ENDFOR
+    \end{algorithmic}
+  }
+  \pause
+  \parbox{.49\linewidth} {
+    \begin{algorithmic}
+      \STATE \textbf{kPRM*}
+      \STATE{$V\gets$ {SampleFree}$_{i=1,\cdots,n}$, $E\gets\emptyset$}
+      \FORALL{$\conf\in V$}
+      \STATE{$U\gets G.nearest(\conf,{\color{red}k^{*}})\setminus\conf$}
+      \FORALL{$\conf'\in U$}
+      \STATE{TryConnect($\conf,\conf'$)}
+      \ENDFOR
+      \ENDFOR
+    \end{algorithmic}
+    \begin{eqnarray*}
+      {\color{red}k^{*}}&=&k_{PRM}(\log(n)),\\
+      k_{PRM}&>&e(1+\frac{1}{d})
+    \end{eqnarray*}
+  }
+\end{frame}
+
+%
+%  PRM*, kPRM*
+%
+
+\begin{frame} {PRM*,kPRM*}
+  Note that
+  \begin{itemize}
+  \item PRM* and kPRM* are not iterative anymore,
+  \item making them iterative is not trivial.
+  \end{itemize}
+\end{frame}
+
+%
+% RRT*, RMG
+%
+
+\begin{frame}
+  There exists also asymptotically optimal variants of RRT
+  \begin{itemize}
+    \item RRG, RRT*
+  \end{itemize}
+  but they are specific to a given problem $(\conf_{init},\conf_{goal})$.
 \end{frame}
