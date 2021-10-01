@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.10" />
+<meta name="generator" content="AsciiDoc 9.0.0rc1" />
 <title>Manipulation planning</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -436,7 +436,7 @@ thead, p.table.header {
 p.table {
   margin-top: 0;
 }
-/* Because the table frame attribute is overriden by CSS in most browsers. */
+/* Because the table frame attribute is overridden by CSS in most browsers. */
 div.tableblock > table[frame="void"] {
   border-style: none;
 }
@@ -728,13 +728,17 @@ install: function(toclevels) {
 }
 
 }
-asciidoc.install();
+asciidoc.install(2);
 /*]]>*/
 </script>
 </head>
 <body class="article">
 <div id="header">
 <h1>Manipulation planning</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
@@ -881,7 +885,7 @@ a state where the gripper holds the ball above the ground.
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<div class="title">Warning</div>
+<img src="./images/icons/warning.png" alt="Warning" />
 </td>
 <td class="content">In method <code>graph.createNode</code> the order of the nodes in the list given as input is important: when checking in which node a configuration lies, node constraints will be checked in the order of node creation.</td>
 </tr></table>
@@ -899,6 +903,32 @@ indices named <code>paths</code> corresponding to indices in the vector of paths
 <div class="sect1">
 <h2 id="_hints">Hints</h2>
 <div class="sectionbody">
+<div class="paragraph"><p>To test a node named <code>nodeName</code>, you can use the following loop:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">for</span></span> i <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> <span style="font-weight: bold"><span style="color: #000000">range</span></span><span style="color: #990000">(</span><span style="color: #993399">100</span><span style="color: #990000">):</span>
+  q <span style="color: #990000">=</span> robot<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">shootRandomConfig</span></span><span style="color: #990000">()</span>
+  res<span style="color: #990000">,</span> q1<span style="color: #990000">,</span> err <span style="color: #990000">=</span> graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">applyNodeConstraints</span></span> <span style="color: #990000">(</span>nodeName<span style="color: #990000">,</span> q<span style="color: #990000">)</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> res<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">break</span></span></tt></pre></div></div>
+<div class="paragraph"><p>If <code>i==99 and res == False</code>, the constraint is probably malformed. Otherwise
+configuration <code>q1</code> is in node <code>nodeName</code>.</p></div>
+<div class="paragraph"><p>To test an edge name <code>edgeName</code>, you can use the following loop:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">for</span></span> i <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> <span style="font-weight: bold"><span style="color: #000000">range</span></span><span style="color: #990000">(</span><span style="color: #993399">100</span><span style="color: #990000">):</span>
+  q <span style="color: #990000">=</span> robot<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">shootRandomConfig</span></span><span style="color: #990000">()</span>
+  res<span style="color: #990000">,</span> q3<span style="color: #990000">,</span> err <span style="color: #990000">=</span> graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">generateTargetConfig</span></span> <span style="color: #990000">(</span>edgeName<span style="color: #990000">,</span> q1<span style="color: #990000">,</span> q2<span style="color: #990000">)</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> res<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">break</span></span></tt></pre></div></div>
+<div class="paragraph"><p>where <code>q1</code> is a configuration in the starting node of <code>edgeName</code>.
+If <code>i==99 and res == False</code>, the constraint is probably malformed. Otherwise,
+configuration <code>q3</code> is in the destination node of <code>edgeName</code> and accessible from
+q1 following this edge.</p></div>
 <div class="sect2">
 <h3 id="_some_useful_methods">Some useful methods</h3>
 <div class="listingblock">
@@ -977,7 +1007,7 @@ graph<span style="color: #990000">.</span><span style="font-weight: bold"><span 
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-11-09 12:13:47 CET
+ 2021-10-01 14:21:10 CEST
 </div>
 </div>
 </body>
