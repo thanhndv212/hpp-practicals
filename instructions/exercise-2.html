@@ -943,6 +943,7 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-style: italic"><span style="color: #9A1900">#  joint2 :            name of the second joint,</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  relativeTransform : relative transformation of joint2 frame in joint1 frame,</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  mask :              list of 6 Boolean to select active coordinates of the constraint.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  note if joint1 == "", joint1 is the world frame.</span></span>
 ps<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">createTransformationConstraint</span></span> <span style="color: #990000">(</span>name<span style="color: #990000">,</span> joint1<span style="color: #990000">,</span> joint2<span style="color: #990000">,</span> relativeTransform<span style="color: #990000">,</span> mask<span style="color: #990000">)</span>
 
 <span style="font-style: italic"><span style="color: #9A1900"># Set whether right hand side of constraint is constant</span></span>
@@ -975,11 +976,12 @@ graph<span style="color: #990000">.</span><span style="font-weight: bold"><span 
 <span style="font-style: italic"><span style="color: #9A1900">#</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  nodeName :   name of the node</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  edgeName :   name of the edge</span></span>
-<span style="font-style: italic"><span style="color: #9A1900">#  constraints: list of names of constraints to be passed to the node or edge</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  c1, c2   :  names of constraints to be passed to the node or edge</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  note:        one and only one argument between node and edge should be</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#              provided.</span></span>
-graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">setConstraints</span></span> <span style="color: #990000">(</span>node <span style="color: #990000">=</span> nodeName<span style="color: #990000">,</span> edge <span style="color: #990000">=</span> edgeName<span style="color: #990000">,</span> numConstraints <span style="color: #990000">=</span> constraints<span style="color: #990000">)</span>
+graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addConstraints</span></span> <span style="color: #990000">(</span>node <span style="color: #990000">=</span> nodeName<span style="color: #990000">,</span> edge <span style="color: #990000">=</span> edgeName<span style="color: #990000">,</span> constraints <span style="color: #990000">=</span> <span style="color: #990000">\</span>
+                      <span style="font-weight: bold"><span style="color: #000000">Constraints</span></span> <span style="color: #990000">(</span>numConstraints <span style="color: #990000">=</span> <span style="color: #990000">[</span><span style="color: #FF0000">'c1'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'c2'</span><span style="color: #990000">]))</span>
 
 <span style="font-style: italic"><span style="color: #9A1900"># Project a configuration on the supspace defined by a node</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#</span></span>
@@ -997,6 +999,11 @@ graph<span style="color: #990000">.</span><span style="font-weight: bold"><span 
 <span style="font-style: italic"><span style="color: #9A1900">#  edgeName: name of the edge,</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  q1:       configuration defining the leaf (right hand side of constraint),</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">#  q2:       configuration to project on the leaf.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#  return:</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#    whether projection succeeded (Boolean),</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#    projected configuration,</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#    numerical error</span></span>
 graph<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">generateTargetConfig</span></span> <span style="color: #990000">(</span>edgeName<span style="color: #990000">,</span> q1<span style="color: #990000">,</span> q2<span style="color: #990000">)</span>
 </tt></pre></div></div>
 </div>
@@ -1007,7 +1014,7 @@ graph<span style="color: #990000">.</span><span style="font-weight: bold"><span 
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-10-01 14:21:10 CEST
+ 2021-10-01 15:31:46 CEST
 </div>
 </div>
 </body>

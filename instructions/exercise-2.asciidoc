@@ -164,6 +164,7 @@ Some useful methods
 #  joint2 :            name of the second joint,
 #  relativeTransform : relative transformation of joint2 frame in joint1 frame,
 #  mask :              list of 6 Boolean to select active coordinates of the constraint.
+#  note if joint1 == "", joint1 is the world frame.
 ps.createTransformationConstraint (name, joint1, joint2, relativeTransform, mask)
 
 # Set whether right hand side of constraint is constant
@@ -196,11 +197,12 @@ graph.createEdge (node1, node2, edgeName, weight, belongsTo)
 #
 #  nodeName :   name of the node
 #  edgeName :   name of the edge
-#  constraints: list of names of constraints to be passed to the node or edge
+#  c1, c2   :  names of constraints to be passed to the node or edge
 #
 #  note:        one and only one argument between node and edge should be
 #              provided.
-graph.setConstraints (node = nodeName, edge = edgeName, numConstraints = constraints)
+graph.addConstraints (node = nodeName, edge = edgeName, constraints = \
+                      Constraints (numConstraints = ['c1', 'c2']))
 
 # Project a configuration on the supspace defined by a node
 #
@@ -218,6 +220,11 @@ graph.applyNodeConstraints (nodeName, q)
 #  edgeName: name of the edge,
 #  q1:       configuration defining the leaf (right hand side of constraint),
 #  q2:       configuration to project on the leaf.
+#
+#  return:
+#    whether projection succeeded (Boolean),
+#    projected configuration,
+#    numerical error
 graph.generateTargetConfig (edgeName, q1, q2)
 
 ----
