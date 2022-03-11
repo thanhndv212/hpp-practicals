@@ -1,10 +1,12 @@
 from math import sqrt
 from hpp import Transform
-from hpp.corbaserver.manipulation import ConstraintGraph
+from hpp.corbaserver.manipulation import ConstraintGraph, Constraints
 from hpp.corbaserver import Client
 Client ().problem.resetProblem ()
 from manipulation import robot, vf, ps, Ground, Box, Pokeball, PathPlayer, gripperName, ballName
 
+
+# load enviroment for viewer
 vf.loadEnvironmentModel (Ground, 'ground')
 vf.loadEnvironmentModel (Box, 'box')
 vf.moveObstacle ('box/base_link_0', [0.3+0.04, 0, 0.04, 0, 0, 0, 1])
@@ -19,13 +21,59 @@ robot.setJointBounds ('pokeball/root_joint', [-.4,.4,-.4,.4,-.1,1.,
 
 q1 = [0, -1.57, 1.57, 0, 0, 0, .3, 0, 0.025, 0, 0, 0, 1]
 
+################## Planning constraint graph #################
 ## Create graph
 graph = ConstraintGraph (robot, 'graph')
 
+## Create nodes and edges
+# Create nodes
+graph.createNode (['grasp', 'ball-above-ground','grasp-placement', 
+                'gripper-above-ball', 'placement'])
 
+# Create edges
+graph.createEdge ('placement', 'placement', 'transit', 1, 'placement')
+graph.createEdge ('grasp', 'grasp', 'transfer', 1, 'grasp')
+
+graph.createEdge ('placement', 'gripper-above-ball', 'approach-ball', 1, 'placement')
+graph.createEdge ('gripper-above-ball', 'placement', 'move-gripper-away', 1, 'gripper-above-ball')
+
+graph.createEdge ('gripper-above-ball', 'grasp-placement', 'grasp-ball', 1, 'gripper-above-ball')
+graph.createEdge ('grasp-placement', 'gripper-above-ball', 'move-gripper-up', 1, 'grasp-placement')
+
+graph.createEdge ('grasp-placement', 'ball-above-ground', 'take-ball-up', 1, 'grasp-placement')
+graph.createEdge ('ball-above-ground', 'grasp-placement', 'put-ball-down', 1, 'ball-above-ground')
+
+graph.createEdge ('ball-above-ground', 'grasp', 'take-ball-away', 1, 'ball-above-ground')
+graph.createEdge ('grasp', 'ball-above-ground', 'approach-ground', 1, 'grasp')
+
+
+## Create transformation constraints
+# ball in grasp 
+ballInGripper = [0, .137, 0, 0.5, 0.5, -0.5, 0.5]
+ps.createTransformationConstraint ('grasp', gripperName, ballName,
+                                   ballInGripper, 6*[True,])
+
+# free rot in z, on x-y plane 
+ps.createTransformationConstraint ('placement', '', ballName,
+                                   [0,0,0.025,0, 0, 0, 1],
+                                   [False, False, True, True, True, False,])
+## Create additional constraints
+
+## Add constraints nodes, edges
+graph.addConstraints (node='placement', constraints = \
+                      Constraints (numConstraints = ['placement'],))
+
+## Configure problem solver 
 ps.selectPathValidation ("Discretized", 0.01)
 ps.selectPathProjector ("Progressive", 0.1)
+
+ps.setConstantRightHandSide ('placement', True)
+
+## Initialize graph
 graph.initialize ()
+
+################# Define and solve manipulation problem ######
+
 
 res, q_init, error = graph.applyNodeConstraints ('placement', q1)
 q2 = q1 [::]
@@ -36,7 +84,9 @@ res, q_goal, error = graph.applyNodeConstraints ('placement', q2)
 ps.setInitialConfig (q_init)
 ps.addGoalConfig (q_goal)
 
-# v = vf.createViewer ()
+
+################ Viewer display #############################
+v = vf.createViewer ()
 # pp = PathPlayer (v)
-# v (q1)
+v (q_goal)
 

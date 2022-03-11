@@ -17,22 +17,26 @@ q1 = [0, -1.57, 1.57, 0, 0, 0, .3, 0, 0.025, 0, 0, 0, 1]
 ## Create constraint graph
 graph = ConstraintGraph (robot, 'graph')
 
+## Create nodes and edges
+#  Warning the order of the nodes is important. When checking in which node
+#  a configuration lies, node constraints will be checked in the order of node
+#  creation.
+graph.createNode (['grasp', 'placement'])
+
+graph.createEdge ('placement', 'placement', 'transit', 1, 'placement')
+graph.createEdge ('grasp', 'grasp', 'transfer', 1, 'grasp')
+
+graph.createEdge ('placement', 'grasp', 'grasp-ball', 1, 'placement')
+graph.createEdge ('grasp', 'placement', 'release-ball', 1, 'grasp')
+
 ## Create constraint of relative position of the ball in the gripper when ball
 ## is grasped
 ballInGripper = [0, .137, 0, 0.5, 0.5, -0.5, 0.5]
 ps.createTransformationConstraint ('grasp', gripperName, ballName,
                                    ballInGripper, 6*[True,])
 
-## Create nodes and edges
-#  Warning the order of the nodes is important. When checking in which node
-#  a configuration lies, node constraints will be checked in the order of node
-#  creation.
-graph.createNode (['grasp', 'placement'])
-graph.createEdge ('placement', 'placement', 'transit', 1, 'placement')
-graph.createEdge ('grasp', 'grasp', 'transfer', 1, 'grasp')
-graph.createEdge ('placement', 'grasp', 'grasp-ball', 1, 'placement')
-graph.createEdge ('grasp', 'placement', 'release-ball', 1, 'grasp')
-
+# ps.createTransformationConstraint ('grasp', gripperName, ballName,
+#                                    ballInGripper, [True, True, True, False, False, False])
 ## Create transformation constraint : ball is in horizontal plane with free
 ## rotation around z
 ps.createTransformationConstraint ('placement', '', ballName,
@@ -55,9 +59,11 @@ graph.addConstraints (edge='transit', constraints = \
                       Constraints (numConstraints = ['placement/complement']))
 graph.addConstraints (edge='grasp-ball', constraints = \
                       Constraints (numConstraints = ['placement/complement']))
+
 # These edges are in node 'grasp'
 graph.addConstraints (edge='transfer',     constraints = Constraints ())
 graph.addConstraints (edge='release-ball', constraints = Constraints ())
+
 ps.selectPathValidation ("Dichotomy", 0)
 ps.selectPathProjector ("Progressive", 0.1)
 graph.initialize ()
@@ -73,10 +79,11 @@ res, q_goal, error = graph.applyNodeConstraints ('placement', q2)
 ## Define manipulation planning problem
 ps.setInitialConfig (q_init)
 ps.addGoalConfig (q_goal)
-
-# v = vf.createViewer ()
-# pp = PathPlayer (v)
+ps.solve()
+v = vf.createViewer ()
+pp = PathPlayer (v)
 # v (q1)
+pp(0)
 
 ## Build relative position of the ball with respect to the gripper
 for i in range (100):
