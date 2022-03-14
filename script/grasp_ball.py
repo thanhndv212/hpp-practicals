@@ -86,15 +86,15 @@ pp = PathPlayer (v)
 pp(0)
 
 ## Build relative position of the ball with respect to the gripper
-for i in range (100):
-  q = robot.shootRandomConfig ()
-  res,q3,err = graph.generateTargetConfig ('grasp-ball', q_init, q)
-  if res and robot.isConfigValid (q3): break;
+# for i in range (100):
+#   q = robot.shootRandomConfig ()
+#   res,q3,err = graph.generateTargetConfig ('grasp-ball', q_init, q)
+#   if res and robot.isConfigValid (q3): break;
 
-if res:
-  robot.setCurrentConfig (q3)
-  gripperPose = Transform (robot.getJointPosition (gripperName))
-  ballPose = Transform (robot.getJointPosition (ballName))
-  gripperGraspsBall = gripperPose.inverse () * ballPose
-  gripperAboveBall = Transform (gripperGraspsBall)
-  gripperAboveBall.translation [2] += .1
+# if res:
+#   robot.setCurrentConfig (q3)
+#   gripperPose = Transform (robot.getJointPosition (gripperName))
+#   ballPose = Transform (robot.getJointPosition (ballName))
+#   gripperGraspsBall = gripperPose.inverse () * ballPose
+#   gripperAboveBall = Transform (gripperGraspsBall)
+#   gripperAboveBall.translation [2] += .1

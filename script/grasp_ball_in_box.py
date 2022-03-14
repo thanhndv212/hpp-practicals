@@ -48,30 +48,94 @@ graph.createEdge ('grasp', 'ball-above-ground', 'approach-ground', 1, 'grasp')
 
 
 ## Create transformation constraints
-# ball in grasp 
+
+## configuration constraints
+
+# grasp (gripper/ball): fixed all
 ballInGripper = [0, .137, 0, 0.5, 0.5, -0.5, 0.5]
 ps.createTransformationConstraint ('grasp', gripperName, ballName,
                                    ballInGripper, 6*[True,])
 
-# free rot in z, on x-y plane 
+# placement (world/ball): fixed z, fixed r, p
 ps.createTransformationConstraint ('placement', '', ballName,
                                    [0,0,0.025,0, 0, 0, 1],
                                    [False, False, True, True, True, False,])
-## Create additional constraints
 
-## Add constraints nodes, edges
+# gripper/inside_box: fixed all
+# ps.createTransformationConstraint ('gripper/inside-box', '', gripperName,
+#                                    [0.3,0,0.025,0.5, 0.5, -0.5, 0.5],
+#                                    6*[True])
+## motion constraints
+# placement/complement (world/ball): fixed x and y, fixed y
+ps.createTransformationConstraint ('placement/complement', '', ballName,
+                                   [0,0,0.025,0, 0, 0, 1],
+                                   [True, True, False, False, False, True,])
+
+# gripper/aligned (world/gripper): fixed x and y, fixed r, p ,y  
+ps.createTransformationConstraint ('gripper/aligned', '', gripperName,
+                                   [0.3, 0., 0., 0.5, 0.5, -0.5, 0.5],
+                                   [True, False, True, True, True, True,])
+
+
+## Add constraints to nodes
 graph.addConstraints (node='placement', constraints = \
                       Constraints (numConstraints = ['placement'],))
+
+graph.addConstraints (node='gripper-above-ball', constraints = \
+                      Constraints (numConstraints = ['placement/complement', 'gripper/aligned'],))
+
+graph.addConstraints (node='grasp-placement', constraints = \
+                      Constraints (numConstraints = ['grasp', 'gripper/aligned'],))
+
+graph.addConstraints (node='ball-above-ground', constraints = \
+                      Constraints (numConstraints = ['grasp', 'gripper/aligned'],))
+
+graph.addConstraints (node='grasp', constraints = \
+                      Constraints (numConstraints = ['grasp'],))
+
+## Add constraints to edges
+graph.addConstraints (edge='transit', constraints = \
+                      Constraints (numConstraints = ['placement/complement']))
+
+
+graph.addConstraints (edge='approach-ball', constraints = \
+                      Constraints (numConstraints = ['placement/complement']))
+
+graph.addConstraints (edge='grasp-ball', constraints = \
+                      Constraints (numConstraints = ['placement/complement', 'gripper/aligned']))
+
+graph.addConstraints (edge='take-ball-up', constraints = \
+                      Constraints (numConstraints = ['grasp', 'gripper/aligned']))
+
+graph.addConstraints (edge='take-ball-away', constraints = \
+                      Constraints (numConstraints = ['grasp']))
+
+graph.addConstraints (edge='approach-ground', constraints = \
+                      Constraints (numConstraints = ['grasp']))
+
+graph.addConstraints (edge='put-ball-down', constraints = \
+                      Constraints (numConstraints = ['grasp', 'gripper/aligned']))
+
+graph.addConstraints (edge='move-gripper-up', constraints = \
+                      Constraints (numConstraints = ['grasp', 'gripper/aligned']))
+
+graph.addConstraints (edge='move-gripper-away', constraints = \
+                      Constraints ())
+
+graph.addConstraints (edge='transfer',     constraints = Constraints ())
+
 
 ## Configure problem solver 
 ps.selectPathValidation ("Discretized", 0.01)
 ps.selectPathProjector ("Progressive", 0.1)
 
 ps.setConstantRightHandSide ('placement', True)
+ps.setConstantRightHandSide ('placement/complement', False)
+
 
 ## Initialize graph
 graph.initialize ()
-
+graph.display (format='svg')
 ################# Define and solve manipulation problem ######
 
 
@@ -83,10 +147,10 @@ res, q_goal, error = graph.applyNodeConstraints ('placement', q2)
 
 ps.setInitialConfig (q_init)
 ps.addGoalConfig (q_goal)
-
+ps.solve()
 
 ################ Viewer display #############################
 v = vf.createViewer ()
-# pp = PathPlayer (v)
-v (q_goal)
-
+pp = PathPlayer (v)
+# v (q_goal)
+pp(0)
