@@ -62,8 +62,11 @@ ps.createTransformationConstraint ('gripper_ball_aligned', gripperName, ballName
 
 # ball in gripper and near table: 
 ps.createTransformationConstraint ('ball_near_table', '', ballName,
-                                   [0,0,0.1,0, 0, 0, 1],
-                                   [True, True, True, True, True, True,])
+                                   [0.3 , 0 , 0.1,0, 0, 0, 1],
+                                   [False, False , True, True, True, False,])
+ps.createTransformationConstraint ('ball_near_table/complement', '', ballName,
+                                   [0.3 , 0.2 , 0.1, 0, 0, 0, 1],
+                                   [True, True, False, False, False, True,])
 
 ## Ball on table
 graph.addConstraints (node='placement', constraints = \
@@ -76,7 +79,7 @@ graph.createEdge ('gripper-above-ball', 'placement', 'move-gripper-away', 1, 'pl
 graph.addConstraints (edge='approach-ball', constraints = \
                       Constraints (numConstraints = ['placement/complement']))
 graph.addConstraints (edge='move-gripper-away', constraints = \
-                      Constraints ())
+                      Constraints (numConstraints = ['placement/complement']))
 
 ## Gripper above ball, ball on table
 graph.addConstraints (node='gripper-above-ball', constraints = \
@@ -96,9 +99,9 @@ graph.addConstraints (node='grasp-placement', constraints = \
 graph.createEdge ('grasp-placement', 'ball-above-ground', 'take-ball-up', 1, 'grasp')
 graph.createEdge ('ball-above-ground', 'grasp-placement', 'put-ball-down', 1, 'grasp')
 graph.addConstraints (edge='take-ball-up', constraints = \
-                      Constraints ())
+                      Constraints (numConstraints = ['ball_near_table/complement']))
 graph.addConstraints (edge='put-ball-down', constraints = \
-                      Constraints ())
+                      Constraints (numConstraints = ['ball_near_table/complement']))
 
 ## Gripper grasp ball, ball near table
 graph.addConstraints (node='ball-above-ground', constraints = \
@@ -126,6 +129,8 @@ ps.selectPathProjector ("Progressive", 0.1)
 
 ps.setConstantRightHandSide ('placement', True)
 ps.setConstantRightHandSide ('placement/complement', False)
+ps.setConstantRightHandSide ('ball_near_table/complement', False)
+
 ps.setConstantRightHandSide
 print("Start constructing constraint graph ... ")
 ## Initialize graph
@@ -135,58 +140,108 @@ graph.initialize ()
                 # 'gripper-above-ball', 'placement'])
 
 
-
+Q = []
 # Test nodes and edges 
 import numpy as np
 
 res, q_init, error = graph.applyNodeConstraints ('placement', q1)
 print("Initial configuration: ",np.around(q_init,4))
+Q.append(q_init)
 
 for i in range(100):
     q = robot.shootRandomConfig()
     res, q_ab , err = graph.generateTargetConfig('approach-ball',q1,q)
     if res: break
 print("Configuration after approach-ball: ", np.around(q_ab, 4))
+Q.append(q_ab)
+
 res, q_gab, err = graph.applyNodeConstraints('gripper-above-ball',q_ab)
 print("Congiguration at gripper above ball: ",np.around(q_gab,4))
+Q.append(q_gab)
 
-# for i in range(100):
-#     q = robot.shootRandomConfig()
-#     res, q_mga , err = graph.generateTargetConfig('move-gripper-away',q_gab, q1)
-#     if res: break
 for i in range(100):
     q = robot.shootRandomConfig()
     res, q_gb , err = graph.generateTargetConfig('grasp-ball',q_gab,q)
     if res: break
 print("Configuration after grasp ball: ",np.around(q_gb, 4))
+Q.append(q_gb)
 
 res, q_gp, err = graph.applyNodeConstraints('grasp-placement',q_gb)
 print("Configuration at grasp placement: ", np.around(q_gp,4))
-
-# for i in range(100):
-#     q = robot.shootRandomConfig()
-#     res, q_mgu , err = graph.generateTargetConfig('move-gripper-up',q_gp,q)
-#     if res: break
-
-# print("Configuration after move gripper up: ", np.around(q_mgu, 4))
+Q.append(q_gp)
 
 for i in range(100):
     q = robot.shootRandomConfig()
     res, q_tbu , err = graph.generateTargetConfig('take-ball-up',q_gp,q)
     if res: break
 print("Configuration after take ball up: ",np.around(q_tbu, 4))
+Q.append(q_tbu)
 
 res, q_bag, err = graph.applyNodeConstraints('ball-above-ground',q_tbu)
 print("Configuration at ball above ground: ", np.around(q_bag,4))
-
-
-
+Q.append(q_bag)
 
 for i in range(100):
-    q= robot.shootRandomConfig()
-    res, q_sol, err = graph.applyNodeConstraints('ball-above-ground',q)
+    q = robot.shootRandomConfig()
+    res, q_tba , err = graph.generateTargetConfig('take-ball-away',q_bag,q)
     if res: break
-print(q_sol)
+print("Configuration after take ball away: ",np.around(q_tba, 4))
+Q.append(q_tba)
+
+res, q_g, err = graph.applyNodeConstraints('grasp',q_tba)
+print("Configuration at grasp: ", np.around(q_bag,4))
+Q.append(q_g)
+
+q2 = q1 [::]
+q2 [7] = .2
+
+# for i in range(100):
+#     q = robot.shootRandomConfig()
+#     res, q_ag , err = graph.generateTargetConfig('approach-ground',q_g,q)
+#     if res: break
+res, q_ag , err = graph.generateTargetConfig('approach-ground',q_g,q2)
+
+print("Configuration after approach ground: ",np.around(q_ag, 4))
+Q.append(q_ag)
+
+res, q_bag_, err = graph.applyNodeConstraints('ball-above-ground',q_ag)
+print("Configuration at ball above ground: ", np.around(q_bag_,4))
+Q.append(q_bag_)
+
+for i in range(100):
+    q = robot.shootRandomConfig()
+    res, q_pbd , err = graph.generateTargetConfig('put-ball-down',q_bag,q)
+    if res: break
+print("Configuration after put ball down: ",np.around(q_pbd, 4))
+Q.append(q_pbd)
+
+res, q_gp_, err = graph.applyNodeConstraints('grasp-placement',q_pbd)
+print("Configuration at grasp placement: ", np.around(q_gp_,4))
+Q.append(q_gp_)
+
+for i in range(100):
+    q = robot.shootRandomConfig()
+    res, q_mgu , err = graph.generateTargetConfig('move-gripper-up',q_gp,q)
+    if res: break
+print("Configuration after move gripper up: ", np.around(q_mgu, 4))
+Q.append(q_mgu)
+
+res, q_gab_, err = graph.applyNodeConstraints('gripper-above-ball',q_mgu)
+print("Congiguration at gripper above ball: ",np.around(q_gab_,4))
+Q.append(q_init)
+
+for i in range(100):
+    q = robot.shootRandomConfig()
+    res, q_mga , err = graph.generateTargetConfig('move-gripper-away',q_gab, q)
+    if res: break
+print("Configuration after move gripper away: ", np.around(q_mga, 4))
+Q.append(q_mga)
+
+
+# for i in range(100):
+#     q= robot.shootRandomConfig()
+#     res, q_sol, err = graph.applyNodeConstraints('ball-above-ground',q)
+#     if res: break
 
 q2 = q1 [::]
 q2 [7] = .2
@@ -195,11 +250,16 @@ res, q_goal, error = graph.applyNodeConstraints ('placement', q2)
 
 
 # path planning solver
-# ps.setInitialConfig (q_init)
-# ps.addGoalConfig (q_goal)
-# ps.solve()
+ps.setInitialConfig (q_init)
+ps.addGoalConfig (q_goal)
+ps.solve()
 
 ################ Viewer display #############################
 v = vf.createViewer ()
 pp = PathPlayer (v)
-# pp(0)
+# import time 
+# for i, q_ in enumerate(Q): 
+#     print(i+1)
+#     v(q_)
+#     time.sleep(1)
+pp(0)
