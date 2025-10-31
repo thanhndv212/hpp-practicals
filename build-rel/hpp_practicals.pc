@@ -1,0 +1,22 @@
+prefix=${pcfiledir}/../..
+exec_prefix=${pcfiledir}/../..
+libdir=${pcfiledir}/../../lib
+bindir=${pcfiledir}/../../bin
+pkglibdir=${pcfiledir}/../../lib/hpp_practicals
+includedir=${pcfiledir}/../../include
+datarootdir=${pcfiledir}/../../share
+pkgdatarootdir=${pcfiledir}/../../share
+docdir=${pcfiledir}/../../share/doc/hpp_practicals
+doxygendocdir=${pcfiledir}/../../share/doc/hpp_practicals/doxygen-html
+
+Name: hpp_practicals
+Description: Practicals for Humanoid Path Planner software.
+URL: https://github.com/humanoid-path-planner/hpp_practicals
+Version: 6.1.0
+Requires: omniORB4, omniORB4 >= 4.1.4, omniDynamic4 >= 4.1.4, openscenegraph >= 3.2, openthreads >= 2.6, openscenegraph-osgQt5, qgv
+Conflicts: 
+Libs: -L${libdir} 
+Libs.private: 
+Cflags:  -I${includedir}
+
+

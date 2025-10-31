@@ -29,7 +29,8 @@ m = MotionPlanner(robot, ps)
 pathId = m.solveBiRRT(maxIter=1000)
 
 # v = vf.createViewer ()
+# pp = PathPlayer (v)
+
 # v (q2)
 # v (q3)
-# pp = PathPlayer (v)
 # pp (pathId)
