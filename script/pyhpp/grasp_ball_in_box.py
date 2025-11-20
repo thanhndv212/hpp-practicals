@@ -1,4 +1,4 @@
-from pyhpp.manipulation import Device, urdf, Graph, Problem, ProgressiveProjector, ManipulationPlanner
+from pyhpp.manipulation import Device, urdf, Graph, Problem, createProgressiveProjector, ManipulationPlanner
 from pyhpp.core import ConfigurationShooter, Dichotomy  # noqa: F401
 import numpy as np
 from pinocchio import SE3, StdVec_Bool as Mask, Quaternion
@@ -67,18 +67,24 @@ q1 = [0, -1.57, 1.57, 0, 0, 0, 0.3, 0, 0.025, 0, 0, 0, 1]
 graph = Graph("graph", robot, problem)
 state_placement = graph.createState("placement", False, 0)
 
-problem.pathValidation = Dichotomy(robot.asPinDevice(), 0)
-problem.pathProjector = ProgressiveProjector(
+# problem.pathValidation = Dichotomy(robot.asPinDevice(), 0)
+problem.pathProjector = createProgressiveProjector(
     problem.distance(), problem.steeringMethod(), 0.01
 )
 graph.initialize()
 q1 = np.array(q1)
 # Project initial configuration on state 'placement'
-res, q_init, error = graph.applyStateConstraints(state_placement, q1)
+constraint_res = graph.applyStateConstraints(state_placement, q1)
+res = constraint_res.success
+q_init = constraint_res.configuration
+error = constraint_res.error
 q2 = q1[::]
 q2[7] = 0.2
 
-res, q_goal, error = graph.applyStateConstraints(state_placement, q2)
+constraint_res = graph.applyStateConstraints(state_placement, q2)
+res = constraint_res.success
+q_goal = constraint_res.configuration
+error = constraint_res.error
 
 # Define manipulation planning problem
 problem.initConfig(q_init)
