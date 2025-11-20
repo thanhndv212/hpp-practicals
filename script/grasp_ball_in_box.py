@@ -144,10 +144,12 @@ Q = []
 # Test nodes and edges 
 import numpy as np
 
+# Project initial config on placement node
 res, q_init, error = graph.applyNodeConstraints ('placement', q1)
 print("Initial configuration: ",np.around(q_init,4))
 Q.append(q_init)
 
+# Generate configuration after approach-ball
 for i in range(100):
     q = robot.shootRandomConfig()
     res, q_ab , err = graph.generateTargetConfig('approach-ball',q1,q)
@@ -155,10 +157,12 @@ for i in range(100):
 print("Configuration after approach-ball: ", np.around(q_ab, 4))
 Q.append(q_ab)
 
+# Project onto gripper-above-ball node
 res, q_gab, err = graph.applyNodeConstraints('gripper-above-ball',q_ab)
 print("Congiguration at gripper above ball: ",np.around(q_gab,4))
 Q.append(q_gab)
 
+# Generate configuration after grasp-ball
 for i in range(100):
     q = robot.shootRandomConfig()
     res, q_gb , err = graph.generateTargetConfig('grasp-ball',q_gab,q)
@@ -166,10 +170,12 @@ for i in range(100):
 print("Configuration after grasp ball: ",np.around(q_gb, 4))
 Q.append(q_gb)
 
+# Project onto grasp-placement node
 res, q_gp, err = graph.applyNodeConstraints('grasp-placement',q_gb)
 print("Configuration at grasp placement: ", np.around(q_gp,4))
 Q.append(q_gp)
 
+# Generate configuration after take-ball-up
 for i in range(100):
     q = robot.shootRandomConfig()
     res, q_tbu , err = graph.generateTargetConfig('take-ball-up',q_gp,q)
@@ -177,10 +183,12 @@ for i in range(100):
 print("Configuration after take ball up: ",np.around(q_tbu, 4))
 Q.append(q_tbu)
 
+# Project onto ball-above-ground node
 res, q_bag, err = graph.applyNodeConstraints('ball-above-ground',q_tbu)
 print("Configuration at ball above ground: ", np.around(q_bag,4))
 Q.append(q_bag)
 
+# Generate configuration after take-ball-away
 for i in range(100):
     q = robot.shootRandomConfig()
     res, q_tba , err = graph.generateTargetConfig('take-ball-away',q_bag,q)
@@ -188,6 +196,7 @@ for i in range(100):
 print("Configuration after take ball away: ",np.around(q_tba, 4))
 Q.append(q_tba)
 
+# Project onto grasp node
 res, q_g, err = graph.applyNodeConstraints('grasp',q_tba)
 print("Configuration at grasp: ", np.around(q_bag,4))
 Q.append(q_g)
@@ -195,6 +204,7 @@ Q.append(q_g)
 q2 = q1 [::]
 q2 [7] = .2
 
+# Generate configuration after approach-ground
 # for i in range(100):
 #     q = robot.shootRandomConfig()
 #     res, q_ag , err = graph.generateTargetConfig('approach-ground',q_g,q)
@@ -204,10 +214,12 @@ res, q_ag , err = graph.generateTargetConfig('approach-ground',q_g,q2)
 print("Configuration after approach ground: ",np.around(q_ag, 4))
 Q.append(q_ag)
 
+# Project onto ball-above-ground node
 res, q_bag_, err = graph.applyNodeConstraints('ball-above-ground',q_ag)
 print("Configuration at ball above ground: ", np.around(q_bag_,4))
 Q.append(q_bag_)
 
+# Generate configuration after put-ball-down
 for i in range(100):
     q = robot.shootRandomConfig()
     res, q_pbd , err = graph.generateTargetConfig('put-ball-down',q_bag,q)
@@ -215,10 +227,12 @@ for i in range(100):
 print("Configuration after put ball down: ",np.around(q_pbd, 4))
 Q.append(q_pbd)
 
+# Project onto grasp-placement node
 res, q_gp_, err = graph.applyNodeConstraints('grasp-placement',q_pbd)
 print("Configuration at grasp placement: ", np.around(q_gp_,4))
 Q.append(q_gp_)
 
+# Generate configuration after move-gripper-up
 for i in range(100):
     q = robot.shootRandomConfig()
     res, q_mgu , err = graph.generateTargetConfig('move-gripper-up',q_gp,q)
@@ -226,10 +240,12 @@ for i in range(100):
 print("Configuration after move gripper up: ", np.around(q_mgu, 4))
 Q.append(q_mgu)
 
+# Project onto gripper-above-ball node
 res, q_gab_, err = graph.applyNodeConstraints('gripper-above-ball',q_mgu)
 print("Congiguration at gripper above ball: ",np.around(q_gab_,4))
 Q.append(q_init)
 
+# Generate configuration after move-gripper-away
 for i in range(100):
     q = robot.shootRandomConfig()
     res, q_mga , err = graph.generateTargetConfig('move-gripper-away',q_gab, q)
@@ -246,6 +262,7 @@ Q.append(q_mga)
 q2 = q1 [::]
 q2 [7] = .2
 
+# Final goal: project onto placement with ball at new location
 res, q_goal, error = graph.applyNodeConstraints ('placement', q2)
 
 
